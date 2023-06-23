@@ -3,5 +3,6 @@ export type PullRequest = {
   author: string
   title: string
   labels: string[]
+  html_url: string
   merged_at: string
 }

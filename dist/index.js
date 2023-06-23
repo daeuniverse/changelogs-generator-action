@@ -22,7 +22,7 @@ exports["default"] = (_a) => {
     var props = __rest(_a, []);
     const owner = props.context.payload.repository.owner;
     const repo = props.context.payload.repository.repo;
-    const commits = props.prs.map((pr) => `* ${pr.title} (@${pr.author})\n`);
+    const commits = JSON.stringify(props.prs.map((pr) => `* ${pr.title} in [#${pr.number}](${pr.html_url}) by (@${pr.author})\n`));
     return `## Context
   🚀 @daebot proposed the following changelogs for release v0.1.0 generated in [workflow run](https://github.com/${owner}/${repo}/actions/runs/${props.context.runId}).
   ## Changelogs
@@ -89,6 +89,7 @@ const getPulls = () => __awaiter(void 0, void 0, void 0, function* () {
             author: (_a = pr.user) === null || _a === void 0 ? void 0 : _a.login,
             title: pr.title,
             labels: pr.labels.map(i => i.name),
+            html_url: pr.html_url,
             merged_at: pr.merged_at
         });
     });

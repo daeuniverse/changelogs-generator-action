@@ -4,8 +4,11 @@ export default ({...props}) => {
   const owner = props.context.payload.repository.owner
   const repo = props.context.payload.repository.repo
 
-  const commits = props.prs.map(
-    (pr: PullRequest) => `* ${pr.title} (@${pr.author})\n`
+  const commits = JSON.stringify(
+    props.prs.map(
+      (pr: PullRequest) =>
+        `* ${pr.title} in [#${pr.number}](${pr.html_url}) by (@${pr.author})\n`
+    )
   )
 
   return `## Context

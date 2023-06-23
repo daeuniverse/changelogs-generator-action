@@ -49,6 +49,7 @@ const getPulls = () => __awaiter(void 0, void 0, void 0, function* () {
             author: (_a = pr.user) === null || _a === void 0 ? void 0 : _a.login,
             title: pr.title,
             labels: pr.labels.map(i => i.name),
+            html_url: pr.html_url,
             merged_at: pr.merged_at
         });
     });

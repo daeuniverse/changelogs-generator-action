@@ -45,6 +45,7 @@ export const getPulls = async (): Promise<PullRequest[]> => {
       author: pr.user?.login as string,
       title: pr.title as string,
       labels: pr.labels.map(i => i.name) as string[],
+      html_url: pr.html_url as string,
       merged_at: pr.merged_at as string
     }))
 }
