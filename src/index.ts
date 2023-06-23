@@ -1,39 +1,21 @@
 import * as core from "@actions/core"
 import * as github from "@actions/github"
+import handler from "./github"
 
-export default async () => {
-  try {
-    // retrive val from inputs
-    const previousRelease = core.getInput("previousRelease")
-    const futureRelease = core.getInput("futureRelease")
-    console.log(previousRelease, futureRelease)
+try {
+  // retrive val from inputs
+  const previousRelease = core.getInput("previousRelease")
+  const futureRelease = core.getInput("futureRelease")
+  console.log(previousRelease, futureRelease)
 
-    // github octokit
-    const token = core.getInput("token")
-    const octokit = github.getOctokit(token)
-    const context = github.context
+  const prs = handler()
+  console.log(`The prs: ${prs}`)
 
-    const time = new Date().toTimeString()
-    core.setOutput("time", time)
-
-    // Get the JSON webhook payload for the event that triggered the workflow
-    const payload = JSON.stringify(context, undefined, 2)
-    console.log(`The event payload: ${payload}`)
-
-    // list all commits since a timestamp
-    const pr = await octokit.rest.pulls
-      .list({
-        repo: context.repo.repo,
-        owner: context.repo.owner,
-        state: "closed",
-        per_page: 10
-      })
-      .then(res => res.data)
-
-    console.log(`The prs: ${pr}`)
-  } catch (err: any) {
-    core.setFailed(err.message)
-  }
+  // set outputs
+  const time = new Date().toTimeString()
+  core.setOutput("time", time)
+} catch (err: any) {
+  core.setFailed(err.message)
 }
 
 // const previousTagSha = (await $fetch(`/repos/${owner}/${repo}/tags`))
