@@ -11,4 +11,4 @@ if [ -n "$INPUT_PREVIOUSRELEASE" ]; then PREVIOUS_TAG="$INPUT_PREVIOUSRELEASE"; 
 echo $PREVIOUS_TAG
 echo $FUTURE_TAG
 
-node ${APP_DIR}/generate-changelogs.mjs
+node ${APP_DIR}/index.js
