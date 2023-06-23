@@ -23,5 +23,5 @@ outputs:
 #   using: "docker"
 #   image: "Dockerfile"
 runs:
-  using: 'node20'
+  using: 'node16'
   main: 'index.mjs'
