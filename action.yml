@@ -1,0 +1,24 @@
+name: "Generate changelog"
+description: "Automatically generate changelogs from pull requests on GitHub"
+branding:
+  icon: edit
+  color: black
+inputs:
+  previousRelease:
+    description: "Previous release tag"
+    required: true
+  futureRelease:
+    description: "Future release tag"
+    required: true
+  token:
+    description: "GitHub auth token"
+    required: true
+  verbose:
+    description: "Run verbosely"
+    required: false
+outputs:
+  changelogs:
+    description: "Contents of generated changelogs"
+runs:
+  using: "docker"
+  image: "Dockerfile"
