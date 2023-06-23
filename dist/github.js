@@ -27,8 +27,7 @@ const getPulls = () => __awaiter(void 0, void 0, void 0, function* () {
         .list({
         repo: context.repo.repo,
         owner: context.repo.owner,
-        state: "closed",
-        per_page: 10
+        state: "closed"
     })
         .then(res => res.data);
     const prevRelease = yield octokit.rest.repos

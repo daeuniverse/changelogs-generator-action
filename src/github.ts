@@ -23,8 +23,7 @@ export const getPulls = async (): Promise<PullRequest[]> => {
     .list({
       repo: context.repo.repo,
       owner: context.repo.owner,
-      state: "closed",
-      per_page: 10
+      state: "closed"
     })
     .then(res => res.data)
 
