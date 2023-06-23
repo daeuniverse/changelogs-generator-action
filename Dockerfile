@@ -2,7 +2,9 @@ FROM node:slim
 
 WORKDIR /app
 
-COPY entrypoint.sh generate-changelogs.mjs ./
+COPY generate-changelogs.mjs ./
+COPY entrypoint.sh ./
+
 RUN chmod +x entrypoint.sh
 
 ENTRYPOINT ["/app/entrypoint.sh"]
