@@ -14,4 +14,4 @@ RUN echo $FUTURE_RELEASE
 
 ENV FUTURE_RELEASE=$FUTURE_RELEASE
 
-CMD [ "node", "generate-changelogs.mjs" ]
+CMD [ "node", "/app/generate-changelogs.mjs" ]

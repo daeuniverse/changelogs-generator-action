@@ -22,3 +22,5 @@ outputs:
 runs:
   using: "docker"
   image: "Dockerfile"
+  args:
+    - FUTURE_RELEASE=${{ inputs.futureRelease }}
