@@ -37,4 +37,5 @@ TBD.
 
 ## References
 
+- [Creating a JavaScript action](https://docs.github.com/en/actions/creating-actions/creating-a-javascript-action)
 - [@actions/github](https://www.npmjs.com/package/@actions/github)

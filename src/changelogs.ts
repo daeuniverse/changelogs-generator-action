@@ -4,7 +4,7 @@ export default ({...props}) => {
   const owner = props.context.payload.repository.owner
   const repo = props.context.payload.repository.repo
 
-  const commits = props.pr.map(
+  const commits = props.prs.map(
     (pr: PullRequest) => `* ${pr.title} (@${pr.author})\n`
   )
 
