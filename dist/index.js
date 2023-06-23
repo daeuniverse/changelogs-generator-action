@@ -26,11 +26,14 @@ exports["default"] = (_a) => {
         .map((pr) => `* ${pr.title} in [#${pr.number}](${pr.html_url}) by (@${pr.author})`)
         .join("\n");
     return `## Context
-  🚀 @daebot proposed the following changelogs for release v0.1.0 generated in [workflow run](https://github.com/${owner}/${repo}/actions/runs/${props.context.runId}).
-  ## Changelogs
-  <!-- BEGIN CHANGELOGS -->
-  [Full Changelog](https://github.com/${owner}/${repo}/compare/${props.inputs.previousRelease}...${props.inputs.futureRelease})
-  ${commits}`;
+
+🚀 @daebot proposed the following changelogs for release v0.1.0 generated in [workflow run](https://github.com/${owner}/${repo}/actions/runs/${props.context.runId}).
+
+## Changelogs
+
+<!-- BEGIN CHANGELOGS -->
+[Full Changelog](https://github.com/${owner}/${repo}/compare/${props.inputs.previousRelease}...${props.inputs.futureRelease})
+${commits}`;
 };
 
 
