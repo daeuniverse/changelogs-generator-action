@@ -20,17 +20,16 @@ const main = async () => {
   console.log(`The event payload: ${payload}`)
 
   // list all commits since a timestamp
-  const data = await Promise.all([
-    octokit.rest.pulls
-      .list({
-        repo: context.repo.repo,
-        owner: context.repo.owner,
-        state: "closed",
-        per_page: 10
-      })
-      .then(res => res.data)
-  ])
-  console.log(data)
+  const pr = await octokit.rest.pulls
+    .list({
+      repo: context.repo.repo,
+      owner: context.repo.owner,
+      state: "closed",
+      per_page: 10
+    })
+    .then(res => res.data)
+
+  console.log(`The prs: ${pr}`)
 }
 
 try {
