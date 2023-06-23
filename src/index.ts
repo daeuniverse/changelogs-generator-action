@@ -23,8 +23,6 @@ const handler = async () => {
       )}`
     )
 
-    context.payload.repository?.name
-    context.payload.repository?.owner
     // construct changelogs
     const changelogs = constructChangelogs({
       context: context,
@@ -35,6 +33,7 @@ const handler = async () => {
     // set outputs
     const time = new Date().toTimeString()
     core.setOutput("time", time)
+    core.setOutput("changelogs", changelogs)
   } catch (err: any) {
     core.setFailed(err.message)
   }

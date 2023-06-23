@@ -116,7 +116,6 @@ const core = __nccwpck_require__(2186);
 const github_1 = __nccwpck_require__(3941);
 const changelogs_1 = __nccwpck_require__(3233);
 const handler = () => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b;
     try {
         // retrive val from inputs
         const previousRelease = core.getInput("previousRelease");
@@ -127,8 +126,6 @@ const handler = () => __awaiter(void 0, void 0, void 0, function* () {
         // fetch pull requests since previous release
         const prs = yield (0, github_1.getPulls)();
         console.log(`PRs since previous release: ${JSON.stringify({ count: prs.length, data: prs }, undefined, 2)}`);
-        (_a = context.payload.repository) === null || _a === void 0 ? void 0 : _a.name;
-        (_b = context.payload.repository) === null || _b === void 0 ? void 0 : _b.owner;
         // construct changelogs
         const changelogs = (0, changelogs_1.default)({
             context: context,
@@ -138,6 +135,7 @@ const handler = () => __awaiter(void 0, void 0, void 0, function* () {
         // set outputs
         const time = new Date().toTimeString();
         core.setOutput("time", time);
+        core.setOutput("changelogs", changelogs);
     }
     catch (err) {
         core.setFailed(err.message);
