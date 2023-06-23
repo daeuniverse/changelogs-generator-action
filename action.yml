@@ -4,10 +4,10 @@ branding:
   icon: edit
   color: black
 inputs:
-  previous_release_tag:
+  previousRelease:
     description: "Previous release tag"
     required: true
-  future_release_tag:
+  futureRelease:
     description: "Future release tag"
     required: true
   token:
