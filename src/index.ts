@@ -1,6 +1,7 @@
 import * as core from "@actions/core"
 import * as github from "@actions/github"
 import {getContext, getPulls} from "./github"
+import constructChangelogs from "./changelogs"
 
 const handler = async () => {
   try {
@@ -9,9 +10,8 @@ const handler = async () => {
     const futureRelease = core.getInput("futureRelease")
     console.log(`Action inputs: ${previousRelease}, ${futureRelease}`)
 
-    console.log(
-      `The event payload: ${JSON.stringify(getContext(), undefined, 2)}`
-    )
+    const context = getContext()
+    console.log(`The event payload: ${JSON.stringify(context, undefined, 2)}`)
 
     // fetch pull requests since previous release
     const prs = await getPulls()
@@ -23,7 +23,14 @@ const handler = async () => {
       )}`
     )
 
+    context.payload.repository?.name
+    context.payload.repository?.owner
     // construct changelogs
+    const changelogs = constructChangelogs({
+      context: context,
+      inputs: {previousRelease, futureRelease},
+      prs
+    })
 
     // set outputs
     const time = new Date().toTimeString()

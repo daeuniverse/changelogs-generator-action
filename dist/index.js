@@ -1,6 +1,38 @@
 require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 3233:
+/***/ (function(__unused_webpack_module, exports) {
+
+"use strict";
+
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports["default"] = (_a) => {
+    var props = __rest(_a, []);
+    const owner = props.context.payload.repository.owner;
+    const repo = props.context.payload.repository.repo;
+    return `## Context
+  🚀 @daebot proposed the following changelogs for release v0.1.0 generated in [workflow run](https://github.com/${owner}/${repo}/actions/runs/${props.context.runId}).
+  ## Changelogs
+  <!-- BEGIN CHANGELOGS -->
+  [Full Changelog](https://github.com/${owner}/${repo}/compare/${props.inputs.previousRelease}...${props.inputs.futureRelease})
+  ${props.prs.title.join("\n")}`;
+};
+
+
+/***/ }),
+
 /***/ 3941:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -82,17 +114,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __nccwpck_require__(2186);
 const github_1 = __nccwpck_require__(3941);
+const changelogs_1 = __nccwpck_require__(3233);
 const handler = () => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b;
     try {
         // retrive val from inputs
         const previousRelease = core.getInput("previousRelease");
         const futureRelease = core.getInput("futureRelease");
         console.log(`Action inputs: ${previousRelease}, ${futureRelease}`);
-        console.log(`The event payload: ${JSON.stringify((0, github_1.getContext)(), undefined, 2)}`);
+        const context = (0, github_1.getContext)();
+        console.log(`The event payload: ${JSON.stringify(context, undefined, 2)}`);
         // fetch pull requests since previous release
         const prs = yield (0, github_1.getPulls)();
         console.log(`PRs since previous release: ${JSON.stringify({ count: prs.length, data: prs }, undefined, 2)}`);
+        (_a = context.payload.repository) === null || _a === void 0 ? void 0 : _a.name;
+        (_b = context.payload.repository) === null || _b === void 0 ? void 0 : _b.owner;
         // construct changelogs
+        const changelogs = (0, changelogs_1.default)({
+            context: context,
+            inputs: { previousRelease, futureRelease },
+            prs
+        });
         // set outputs
         const time = new Date().toTimeString();
         core.setOutput("time", time);
