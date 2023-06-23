@@ -21,7 +21,7 @@ export default async () => {
     })
     .then(res => res.data)
 
-  const latestRelease = await octokit.rest.repos
+  const prevRelease = await octokit.rest.repos
     .listReleases({
       repo: context.repo.repo,
       owner: context.repo.owner,
@@ -30,7 +30,7 @@ export default async () => {
     .then(res => res.data[0])
 
   return prs.filter(pr => {
-    if (pr.merged_at && pr.merged_at > latestRelease.created_at) {
+    if (pr.merged_at && pr.merged_at > prevRelease.created_at) {
       return {
         number: pr.number,
         assignee: pr.user?.login,
