@@ -35,16 +35,18 @@ exports.default = () => __awaiter(void 0, void 0, void 0, function* () {
         per_page: 1
     })
         .then(res => res.data[0]);
-    return prs.filter(pr => {
+    return prs
+        .filter(pr => {
+        return pr.merged_at && pr.merged_at > prevRelease.created_at;
+    })
+        .map(pr => {
         var _a;
-        if (pr.merged_at && pr.merged_at > prevRelease.created_at) {
-            return {
-                number: pr.number,
-                assignee: (_a = pr.user) === null || _a === void 0 ? void 0 : _a.login,
-                title: pr.title,
-                labels: pr.labels,
-                merged_at: pr.merged_at
-            };
-        }
+        return ({
+            number: pr.number,
+            assignee: (_a = pr.user) === null || _a === void 0 ? void 0 : _a.login,
+            title: pr.title,
+            labels: pr.labels,
+            merged_at: pr.merged_at
+        });
     });
 });

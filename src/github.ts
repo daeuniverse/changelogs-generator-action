@@ -29,15 +29,15 @@ export default async () => {
     })
     .then(res => res.data[0])
 
-  return prs.filter(pr => {
-    if (pr.merged_at && pr.merged_at > prevRelease.created_at) {
-      return {
-        number: pr.number,
-        assignee: pr.user?.login,
-        title: pr.title,
-        labels: pr.labels,
-        merged_at: pr.merged_at
-      }
-    }
-  })
+  return prs
+    .filter(pr => {
+      return pr.merged_at && pr.merged_at > prevRelease.created_at
+    })
+    .map(pr => ({
+      number: pr.number,
+      assignee: pr.user?.login,
+      title: pr.title,
+      labels: pr.labels,
+      merged_at: pr.merged_at
+    }))
 }
