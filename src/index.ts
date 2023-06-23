@@ -9,7 +9,7 @@ const handler = async () => {
     const futureRelease = core.getInput("futureRelease")
     console.log(previousRelease, futureRelease)
 
-    const prs = retrieveData()
+    const prs = await retrieveData()
     console.log(`The prs: ${JSON.stringify(prs, undefined, 2)}`)
 
     // set outputs

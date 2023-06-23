@@ -63,7 +63,7 @@ const handler = () => __awaiter(void 0, void 0, void 0, function* () {
         const previousRelease = core.getInput("previousRelease");
         const futureRelease = core.getInput("futureRelease");
         console.log(previousRelease, futureRelease);
-        const prs = (0, github_1.default)();
+        const prs = yield (0, github_1.default)();
         console.log(`The prs: ${JSON.stringify(prs, undefined, 2)}`);
         // set outputs
         const time = new Date().toTimeString();
