@@ -1,38 +1,42 @@
 import * as core from "@actions/core"
 import * as github from "@actions/github"
 
-// const { GITHUB_TOKEN, FUTURE_TAG, PREVIOUS_TAG } = process.env
-
-// console.log(GITHUB_TOKEN, FUTURE_TAG, PREVIOUS_TAG)
-
-try {
-  // `who-to-greet` input defined in action metadata file
+const main = async () => {
+  // retrive val from inputs
   const previousRelease = core.getInput("previousRelease")
   const futureRelease = core.getInput("futureRelease")
   console.log(previousRelease, futureRelease)
+
+  // github octokit
+  const token = core.getInput("token")
+  const octokit = github.getOctokit(token)
+  const context = github.context
 
   const time = new Date().toTimeString()
   core.setOutput("time", time)
 
   // Get the JSON webhook payload for the event that triggered the workflow
-  const payload = JSON.stringify(github.context.payload, undefined, 2)
+  const payload = JSON.stringify(context, undefined, 2)
   console.log(`The event payload: ${payload}`)
+
+  // list all commits since a timestamp
+  const prs = await octokit.rest.pulls
+    .list({
+      repo: context.repo.repo,
+      owner: context.repo.owner,
+      state: "closed",
+      per_page: 10
+    })
+    .then(res => res.data)
+
+  console.log(prs)
+}
+
+try {
+  main()
 } catch (err: any) {
   core.setFailed(err.message)
 }
-
-// const originRemote = new URL(spawnSync('git', ['remote', 'get-url', 'origin']).stdout.toString())
-
-// const [owner, repo] = originRemote.pathname.replace(/\.git$/, '').split('/').splice(1)
-
-// const $fetch = async(api, init) => (await fetch(`https://api.github.com${api}`, {
-//   headers: {
-//     'Accept': 'application/vnd.github+json',
-//     'Authorization': `Bearer ${GITHUB_TOKEN}`,
-//     'GitHub-Api-Version': '2022-11-28'
-//   },
-//   ...init
-// })).json()
 
 // const previousTagSha = (await $fetch(`/repos/${owner}/${repo}/tags`))
 //   .filter(tag => tag.name === PREVIOUS_TAG)[0].commit.sha
