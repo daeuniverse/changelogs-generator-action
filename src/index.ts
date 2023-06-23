@@ -9,7 +9,7 @@ try {
   console.log(previousRelease, futureRelease)
 
   const prs = handler()
-  console.log(`The prs: ${prs}`)
+  console.log(`The prs: ${JSON.stringify(prs, undefined, 2)}`)
 
   // set outputs
   const time = new Date().toTimeString()

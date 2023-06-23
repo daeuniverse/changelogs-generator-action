@@ -9840,7 +9840,7 @@ try {
     const futureRelease = core.getInput("futureRelease");
     console.log(previousRelease, futureRelease);
     const prs = (0, github_1.default)();
-    console.log(`The prs: ${prs}`);
+    console.log(`The prs: ${JSON.stringify(prs, undefined, 2)}`);
     // set outputs
     const time = new Date().toTimeString();
     core.setOutput("time", time);
