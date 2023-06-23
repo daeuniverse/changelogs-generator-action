@@ -1,16 +1,29 @@
 import * as core from "@actions/core"
 import * as github from "@actions/github"
-import retrieveData from "./github"
+import {getContext, getPulls} from "./github"
 
 const handler = async () => {
   try {
     // retrive val from inputs
     const previousRelease = core.getInput("previousRelease")
     const futureRelease = core.getInput("futureRelease")
-    console.log(previousRelease, futureRelease)
+    console.log(`Action inputs: ${previousRelease}, ${futureRelease}`)
 
-    const prs = await retrieveData()
-    console.log(`The prs: ${JSON.stringify(prs, undefined, 2)}`)
+    console.log(
+      `The event payload: ${JSON.stringify(getContext(), undefined, 2)}`
+    )
+
+    // fetch pull requests since previous release
+    const prs = await getPulls()
+    console.log(
+      `PRs since previous release: ${JSON.stringify(
+        {count: prs.length, data: prs},
+        undefined,
+        2
+      )}`
+    )
+
+    // construct changelogs
 
     // set outputs
     const time = new Date().toTimeString()

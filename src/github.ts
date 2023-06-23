@@ -1,16 +1,23 @@
 import * as core from "@actions/core"
 import * as github from "@actions/github"
+import {PullRequest} from "./types"
 
-export default async () => {
-  // github octokit
-  const token = core.getInput("token")
-  const octokit = github.getOctokit(token)
-  const context = github.context
+// github octokit
+const token = core.getInput("token")
+const octokit = github.getOctokit(token)
+const context = github.context
 
+export interface Action {
+  getContext: () => {}
+  getPulls: () => Promise<PullRequest[]>
+}
+
+export const getContext = () => {
   // get the JSON webhook payload for the event that triggered the workflow
-  const payload = JSON.stringify(context, undefined, 2)
-  console.log(`The event payload: ${payload}`)
+  return context
+}
 
+export const getPulls = async (): Promise<PullRequest[]> => {
   // list all commits since a timestamp
   const prs = await octokit.rest.pulls
     .list({
@@ -35,9 +42,9 @@ export default async () => {
     })
     .map(pr => ({
       number: pr.number,
-      assignee: pr.user?.login,
-      title: pr.title,
-      labels: pr.labels,
-      merged_at: pr.merged_at
+      assignee: pr.user?.login as string,
+      title: pr.title as string,
+      labels: pr.labels.map(i => i.name) as string[],
+      merged_at: pr.merged_at as string
     }))
 }

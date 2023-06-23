@@ -16,16 +16,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getPulls = exports.getContext = void 0;
 const core = __nccwpck_require__(2186);
 const github = __nccwpck_require__(5438);
-exports["default"] = () => __awaiter(void 0, void 0, void 0, function* () {
-    // github octokit
-    const token = core.getInput("token");
-    const octokit = github.getOctokit(token);
-    const context = github.context;
+// github octokit
+const token = core.getInput("token");
+const octokit = github.getOctokit(token);
+const context = github.context;
+const getContext = () => {
     // get the JSON webhook payload for the event that triggered the workflow
-    const payload = JSON.stringify(context, undefined, 2);
-    console.log(`The event payload: ${payload}`);
+    return context;
+};
+exports.getContext = getContext;
+const getPulls = () => __awaiter(void 0, void 0, void 0, function* () {
     // list all commits since a timestamp
     const prs = yield octokit.rest.pulls
         .list({
@@ -52,11 +55,12 @@ exports["default"] = () => __awaiter(void 0, void 0, void 0, function* () {
             number: pr.number,
             assignee: (_a = pr.user) === null || _a === void 0 ? void 0 : _a.login,
             title: pr.title,
-            labels: pr.labels,
+            labels: pr.labels.map(i => i.name),
             merged_at: pr.merged_at
         });
     });
 });
+exports.getPulls = getPulls;
 
 
 /***/ }),
@@ -83,9 +87,12 @@ const handler = () => __awaiter(void 0, void 0, void 0, function* () {
         // retrive val from inputs
         const previousRelease = core.getInput("previousRelease");
         const futureRelease = core.getInput("futureRelease");
-        console.log(previousRelease, futureRelease);
-        const prs = yield (0, github_1.default)();
-        console.log(`The prs: ${JSON.stringify(prs, undefined, 2)}`);
+        console.log(`Action inputs: ${previousRelease}, ${futureRelease}`);
+        console.log(`The event payload: ${JSON.stringify((0, github_1.getContext)(), undefined, 2)}`);
+        // fetch pull requests since previous release
+        const prs = yield (0, github_1.getPulls)();
+        console.log(`PRs since previous release: ${JSON.stringify({ count: prs.length, data: prs }, undefined, 2)}`);
+        // construct changelogs
         // set outputs
         const time = new Date().toTimeString();
         core.setOutput("time", time);

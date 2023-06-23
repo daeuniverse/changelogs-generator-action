@@ -9,16 +9,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getPulls = exports.getContext = void 0;
 const core = require("@actions/core");
 const github = require("@actions/github");
-exports.default = () => __awaiter(void 0, void 0, void 0, function* () {
-    // github octokit
-    const token = core.getInput("token");
-    const octokit = github.getOctokit(token);
-    const context = github.context;
+// github octokit
+const token = core.getInput("token");
+const octokit = github.getOctokit(token);
+const context = github.context;
+const getContext = () => {
     // get the JSON webhook payload for the event that triggered the workflow
-    const payload = JSON.stringify(context, undefined, 2);
-    console.log(`The event payload: ${payload}`);
+    return context;
+};
+exports.getContext = getContext;
+const getPulls = () => __awaiter(void 0, void 0, void 0, function* () {
     // list all commits since a timestamp
     const prs = yield octokit.rest.pulls
         .list({
@@ -45,8 +48,9 @@ exports.default = () => __awaiter(void 0, void 0, void 0, function* () {
             number: pr.number,
             assignee: (_a = pr.user) === null || _a === void 0 ? void 0 : _a.login,
             title: pr.title,
-            labels: pr.labels,
+            labels: pr.labels.map(i => i.name),
             merged_at: pr.merged_at
         });
     });
 });
+exports.getPulls = getPulls;
