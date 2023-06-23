@@ -1,6 +1,86 @@
 require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 9283:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const core = __nccwpck_require__(2186);
+const github = __nccwpck_require__(5438);
+exports["default"] = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        // retrive val from inputs
+        const previousRelease = core.getInput("previousRelease");
+        const futureRelease = core.getInput("futureRelease");
+        console.log(previousRelease, futureRelease);
+        // github octokit
+        const token = core.getInput("token");
+        const octokit = github.getOctokit(token);
+        const context = github.context;
+        const time = new Date().toTimeString();
+        core.setOutput("time", time);
+        // Get the JSON webhook payload for the event that triggered the workflow
+        const payload = JSON.stringify(context, undefined, 2);
+        console.log(`The event payload: ${payload}`);
+        // list all commits since a timestamp
+        const pr = yield octokit.rest.pulls
+            .list({
+            repo: context.repo.repo,
+            owner: context.repo.owner,
+            state: "closed",
+            per_page: 10
+        })
+            .then(res => res.data);
+        console.log(`The prs: ${pr}`);
+    }
+    catch (err) {
+        core.setFailed(err.message);
+    }
+});
+// const previousTagSha = (await $fetch(`/repos/${owner}/${repo}/tags`))
+//   .filter(tag => tag.name === PREVIOUS_TAG)[0].commit.sha
+// const commitsMessage = (await $fetch(`/repos/${owner}/${repo}/commits?sha=${previousTagSha}`))
+//   // filter merge commits and not end with (#number)
+//   .filter(commit => commit.parents.length === 1
+//     && commit.commit.message.split('\n')[0].match(/\(#\d+\)$/))
+//   .map(commit => `* ${commit.commit.message.split('\n')[0]} (@${commit.author.login})`)
+//   .join('\n')
+// await $fetch(`/repos/${owner}/${repo}/issues`, {
+//   method: 'POST',
+//   body: JSON.stringify({
+//     title: `[Release Changelogs] ${FUTURE_TAG}`,
+//     body:
+// `## Context
+// 🚀 @daebot proposed the following changelogs for release v0.1.0 generated in [workflow run](https://github.com/${owner}/${repo}/actions/runs/${RUN_ID}).
+// ## Changelogs
+// <!-- BEGIN CHANGELOGS -->
+// [Full Changelog](https://github.com/${repo}/${repo}/compare/${PREVIOUS_TAG}...${FUTURE_TAG})
+// ${commitsMessage}
+// `
+//   })
+// })
+// console.log(`## Context
+// 🚀 @daebot proposed the following changelogs for release v0.1.0 generated in [workflow run](https://github.com/${owner}/${repo}/actions/runs/${RUN_ID}).
+// ## Changelogs
+// <!-- BEGIN CHANGELOGS -->
+// [Full Changelog](https://github.com/${repo}/${repo}/compare/${PREVIOUS_TAG}...${FUTURE_TAG})
+// ${commitsMessage}
+// `)
+
+
+/***/ }),
+
 /***/ 7351:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -9786,74 +9866,13 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
 /******/ 	
 /************************************************************************/
-var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
-(() => {
-"use strict";
-var exports = __webpack_exports__;
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-const core = __nccwpck_require__(2186);
-const github = __nccwpck_require__(5438);
-// const { GITHUB_TOKEN, FUTURE_TAG, PREVIOUS_TAG } = process.env
-// console.log(GITHUB_TOKEN, FUTURE_TAG, PREVIOUS_TAG)
-try {
-    // `who-to-greet` input defined in action metadata file
-    const previousRelease = core.getInput("previousRelease");
-    const futureRelease = core.getInput("futureRelease");
-    console.log(previousRelease, futureRelease);
-    const time = new Date().toTimeString();
-    core.setOutput("time", time);
-    // Get the JSON webhook payload for the event that triggered the workflow
-    const payload = JSON.stringify(github.context.payload, undefined, 2);
-    console.log(`The event payload: ${payload}`);
-}
-catch (error) {
-    core.setFailed(error.message);
-}
-// const originRemote = new URL(spawnSync('git', ['remote', 'get-url', 'origin']).stdout.toString())
-// const [owner, repo] = originRemote.pathname.replace(/\.git$/, '').split('/').splice(1)
-// const $fetch = async(api, init) => (await fetch(`https://api.github.com${api}`, {
-//   headers: {
-//     'Accept': 'application/vnd.github+json',
-//     'Authorization': `Bearer ${GITHUB_TOKEN}`,
-//     'GitHub-Api-Version': '2022-11-28'
-//   },
-//   ...init
-// })).json()
-// const previousTagSha = (await $fetch(`/repos/${owner}/${repo}/tags`))
-//   .filter(tag => tag.name === PREVIOUS_TAG)[0].commit.sha
-// const commitsMessage = (await $fetch(`/repos/${owner}/${repo}/commits?sha=${previousTagSha}`))
-//   // filter merge commits and not end with (#number)
-//   .filter(commit => commit.parents.length === 1
-//     && commit.commit.message.split('\n')[0].match(/\(#\d+\)$/))
-//   .map(commit => `* ${commit.commit.message.split('\n')[0]} (@${commit.author.login})`)
-//   .join('\n')
-// await $fetch(`/repos/${owner}/${repo}/issues`, {
-//   method: 'POST',
-//   body: JSON.stringify({
-//     title: `[Release Changelogs] ${FUTURE_TAG}`,
-//     body:
-// `## Context
-// 🚀 @daebot proposed the following changelogs for release v0.1.0 generated in [workflow run](https://github.com/${owner}/${repo}/actions/runs/${RUN_ID}).
-// ## Changelogs
-// <!-- BEGIN CHANGELOGS -->
-// [Full Changelog](https://github.com/${repo}/${repo}/compare/${PREVIOUS_TAG}...${FUTURE_TAG})
-// ${commitsMessage}
-// `
-//   })
-// })
-// console.log(`## Context
-// 🚀 @daebot proposed the following changelogs for release v0.1.0 generated in [workflow run](https://github.com/${owner}/${repo}/actions/runs/${RUN_ID}).
-// ## Changelogs
-// <!-- BEGIN CHANGELOGS -->
-// [Full Changelog](https://github.com/${repo}/${repo}/compare/${PREVIOUS_TAG}...${FUTURE_TAG})
-// ${commitsMessage}
-// `)
-
-})();
-
-module.exports = __webpack_exports__;
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module is referenced by other modules so it can't be inlined
+/******/ 	var __webpack_exports__ = __nccwpck_require__(9283);
+/******/ 	module.exports = __webpack_exports__;
+/******/ 	
 /******/ })()
 ;
 //# sourceMappingURL=index.js.map
