@@ -19,6 +19,9 @@ inputs:
 outputs:
   changelogs:
     description: "Contents of generated changelogs"
+# runs:
+#   using: "docker"
+#   image: "Dockerfile"
 runs:
-  using: "docker"
-  image: "Dockerfile"
+  using: 'node20'
+  main: 'index.mjs'

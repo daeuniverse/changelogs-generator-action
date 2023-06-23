@@ -1,8 +1,25 @@
-import { spawnSync } from 'node:child_process'
+const core = require('@actions/core');
+const github = require('@actions/github');
 
-const { GITHUB_TOKEN, FUTURE_TAG, PREVIOUS_TAG } = process.env
+// const { GITHUB_TOKEN, FUTURE_TAG, PREVIOUS_TAG } = process.env
 
-console.log(GITHUB_TOKEN, FUTURE_TAG, PREVIOUS_TAG)
+// console.log(GITHUB_TOKEN, FUTURE_TAG, PREVIOUS_TAG)
+
+try {
+  // `who-to-greet` input defined in action metadata file
+  const previousRelease = core.getInput('previousRelease');
+  const futureRelease = core.getInput('futureRelease');
+  console.log(previousRelease, futureRelease);
+
+  const time = (new Date()).toTimeString();
+  core.setOutput("time", time);
+
+  // Get the JSON webhook payload for the event that triggered the workflow
+  const payload = JSON.stringify(github.context.payload, undefined, 2)
+  console.log(`The event payload: ${payload}`);
+} catch (error) {
+  core.setFailed(error.message);
+}
 
 // const originRemote = new URL(spawnSync('git', ['remote', 'get-url', 'origin']).stdout.toString())
 
