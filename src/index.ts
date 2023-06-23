@@ -1,22 +1,26 @@
 import * as core from "@actions/core"
 import * as github from "@actions/github"
-import handler from "./github"
+import retrieveData from "./github"
 
-try {
-  // retrive val from inputs
-  const previousRelease = core.getInput("previousRelease")
-  const futureRelease = core.getInput("futureRelease")
-  console.log(previousRelease, futureRelease)
+const handler = async () => {
+  try {
+    // retrive val from inputs
+    const previousRelease = core.getInput("previousRelease")
+    const futureRelease = core.getInput("futureRelease")
+    console.log(previousRelease, futureRelease)
 
-  const prs = handler()
-  console.log(`The prs: ${JSON.stringify(prs, undefined, 2)}`)
+    const prs = retrieveData()
+    console.log(`The prs: ${JSON.stringify(prs, undefined, 2)}`)
 
-  // set outputs
-  const time = new Date().toTimeString()
-  core.setOutput("time", time)
-} catch (err: any) {
-  core.setFailed(err.message)
+    // set outputs
+    const time = new Date().toTimeString()
+    core.setOutput("time", time)
+  } catch (err: any) {
+    core.setFailed(err.message)
+  }
 }
+
+handler()
 
 // const previousTagSha = (await $fetch(`/repos/${owner}/${repo}/tags`))
 //   .filter(tag => tag.name === PREVIOUS_TAG)[0].commit.sha
