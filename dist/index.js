@@ -27,7 +27,7 @@ exports["default"] = () => __awaiter(void 0, void 0, void 0, function* () {
     const payload = JSON.stringify(context, undefined, 2);
     console.log(`The event payload: ${payload}`);
     // list all commits since a timestamp
-    return yield octokit.rest.pulls
+    const prs = yield octokit.rest.pulls
         .list({
         repo: context.repo.repo,
         owner: context.repo.owner,
@@ -35,6 +35,25 @@ exports["default"] = () => __awaiter(void 0, void 0, void 0, function* () {
         per_page: 10
     })
         .then(res => res.data);
+    const latestRelease = yield octokit.rest.repos
+        .listReleases({
+        repo: context.repo.repo,
+        owner: context.repo.owner,
+        per_page: 1
+    })
+        .then(res => res.data[0]);
+    return prs.filter(pr => {
+        var _a;
+        if (pr.merged_at && pr.merged_at > latestRelease.created_at) {
+            return {
+                number: pr.number,
+                assignee: (_a = pr.user) === null || _a === void 0 ? void 0 : _a.login,
+                title: pr.title,
+                labels: pr.labels,
+                merged_at: pr.merged_at
+            };
+        }
+    });
 });
 
 
