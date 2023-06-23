@@ -46,7 +46,7 @@ const getPulls = () => __awaiter(void 0, void 0, void 0, function* () {
         var _a;
         return ({
             number: pr.number,
-            assignee: (_a = pr.user) === null || _a === void 0 ? void 0 : _a.login,
+            author: (_a = pr.user) === null || _a === void 0 ? void 0 : _a.login,
             title: pr.title,
             labels: pr.labels.map(i => i.name),
             merged_at: pr.merged_at

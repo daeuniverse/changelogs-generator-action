@@ -1,6 +1,6 @@
 export type PullRequest = {
   number: number
-  assignee: string
+  author: string
   title: string
   labels: string[]
   merged_at: string

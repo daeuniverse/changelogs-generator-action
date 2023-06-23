@@ -7,7 +7,7 @@ const token = core.getInput("token")
 const octokit = github.getOctokit(token)
 const context = github.context
 
-export interface Action {
+interface Action {
   getContext: () => {}
   getPulls: () => Promise<PullRequest[]>
 }
@@ -42,7 +42,7 @@ export const getPulls = async (): Promise<PullRequest[]> => {
     })
     .map(pr => ({
       number: pr.number,
-      assignee: pr.user?.login as string,
+      author: pr.user?.login as string,
       title: pr.title as string,
       labels: pr.labels.map(i => i.name) as string[],
       merged_at: pr.merged_at as string
