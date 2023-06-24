@@ -19,7 +19,8 @@ export default ({...props}) => {
     )
     .join("\n")
 
-  return `## Context
+  return `
+## Context
 
 🚀 @daebot proposed the following changelogs for release v0.1.0 generated in [workflow run](https://github.com/${owner}/${repo}/actions/runs/${
     props.context.runId
@@ -36,5 +37,6 @@ ${commits}
 
 ${newContributors.length > 0 ? "## New Contributors" : ""}
 
-${newContributors.length > 0 ? newContributors : ""}`.trim()
+${newContributors.length > 0 ? newContributors : ""}
+`.trim()
 }
