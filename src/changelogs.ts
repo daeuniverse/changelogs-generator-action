@@ -33,7 +33,7 @@ export default ({...props}) => {
   }...${props.inputs.futureRelease})
 ${commits}
 
-${newContributors.length > 0 && "## New Contributors"}
+${newContributors.length > 0 ? "## New Contributors" : ""}
 
-${newContributors.length > 0 && newContributors}`
+${newContributors.length > 0 ? newContributors : ""}`
 }
