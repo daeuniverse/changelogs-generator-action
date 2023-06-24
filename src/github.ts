@@ -48,11 +48,11 @@ export const getPulls = async (): Promise<PullRequest[]> => {
     })
     .map(pr => ({
       number: pr.number,
-      author: pr.user?.login as string,
-      title: pr.title as string,
-      labels: pr.labels.map(i => i.name) as string[],
-      html_url: pr.html_url as string,
-      merged_at: pr.merged_at as string,
+      author: pr.user?.login || "",
+      title: pr.title || "",
+      labels: pr.labels.map(i => i.name),
+      html_url: pr.html_url,
+      merged_at: pr.merged_at || "",
       is_new_contributor: !contributors.includes(pr.user?.login)
     }))
 }
