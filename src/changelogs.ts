@@ -32,7 +32,7 @@ ${commits}
 
 **Full Changelog**: https://github.com/${owner}/${repo}/compare/${
     props.inputs.previousRelease
-  }...${props.inputs.futureRelease})
+  }...${props.inputs.futureRelease}
 
 ${newContributors.length > 0 ? "## New Contributors" : ""}
 

@@ -38,7 +38,7 @@ exports["default"] = (_a) => {
 <!-- BEGIN CHANGELOGS -->
 ${commits}
 
-**Full Changelog**: https://github.com/${owner}/${repo}/compare/${props.inputs.previousRelease}...${props.inputs.futureRelease})
+**Full Changelog**: https://github.com/${owner}/${repo}/compare/${props.inputs.previousRelease}...${props.inputs.futureRelease}
 
 ${newContributors.length > 0 ? "## New Contributors" : ""}
 
