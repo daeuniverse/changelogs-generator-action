@@ -17,6 +17,7 @@ export default ({...props}) => {
       (pr: PullRequest) =>
         `* @${pr.author} made their first contribution in [#${pr.number}](${pr.html_url})`
     )
+    .join("\n")
 
   return `## Context
 

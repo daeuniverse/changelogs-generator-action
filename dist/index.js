@@ -27,7 +27,8 @@ exports["default"] = (_a) => {
         .join("\n");
     const newContributors = props.prs
         .filter((pr) => pr.is_new_contributor)
-        .map((pr) => `* @${pr.author} made their first contribution in [#${pr.number}](${pr.html_url})`);
+        .map((pr) => `* @${pr.author} made their first contribution in [#${pr.number}](${pr.html_url})`)
+        .join("\n");
     return `## Context
 
 🚀 @daebot proposed the following changelogs for release v0.1.0 generated in [workflow run](https://github.com/${owner}/${repo}/actions/runs/${props.context.runId}).
@@ -93,14 +94,14 @@ const getPulls = () => __awaiter(void 0, void 0, void 0, function* () {
         repo: context.repo.repo,
         owner: context.repo.owner
     })
-        .then(res => res.data.map(person => person));
+        .then(res => res.data.map(person => person.login));
     console.log(`Contributors: `, contributors);
     return prs
         .filter(pr => {
         return pr.merged_at && pr.merged_at > prevRelease.created_at;
     })
         .map(pr => {
-        var _a;
+        var _a, _b;
         return ({
             number: pr.number,
             author: (_a = pr.user) === null || _a === void 0 ? void 0 : _a.login,
@@ -108,7 +109,7 @@ const getPulls = () => __awaiter(void 0, void 0, void 0, function* () {
             labels: pr.labels.map(i => i.name),
             html_url: pr.html_url,
             merged_at: pr.merged_at,
-            is_new_contributor: true
+            is_new_contributor: contributors.includes((_b = pr.user) === null || _b === void 0 ? void 0 : _b.login)
         });
     });
 });
