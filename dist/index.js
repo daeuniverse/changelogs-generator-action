@@ -20,8 +20,8 @@ var __rest = (this && this.__rest) || function (s, e) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports["default"] = (_a) => {
     var props = __rest(_a, []);
-    const owner = props.context.payload.repo.owner;
-    const repo = props.context.payload.repo.repo;
+    const owner = props.context.repo.owner;
+    const repo = props.context.repo.repo;
     const commits = props.prs
         .map((pr) => `* ${pr.title} in [#${pr.number}](${pr.html_url}) by (@${pr.author})`)
         .join("\n");

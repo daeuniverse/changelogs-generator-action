@@ -1,8 +1,8 @@
 import {PullRequest} from "./types"
 
 export default ({...props}) => {
-  const owner = props.context.payload.repo.owner
-  const repo = props.context.payload.repo.repo
+  const owner = props.context.repo.owner
+  const repo = props.context.repo.repo
 
   const commits: string[] = props.prs
     .map(
