@@ -34,5 +34,6 @@ export default ({...props}) => {
 ${commits}
 
 ${newContributors.length > 0 && "## New Contributors"}
+
 ${newContributors.length > 0 && newContributors}`
 }

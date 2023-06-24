@@ -57,7 +57,7 @@ const getPulls = () => __awaiter(void 0, void 0, void 0, function* () {
             labels: pr.labels.map(i => i.name),
             html_url: pr.html_url,
             merged_at: pr.merged_at,
-            is_new_contributor: contributors.includes((_b = pr.user) === null || _b === void 0 ? void 0 : _b.login)
+            is_new_contributor: !contributors.includes((_b = pr.user) === null || _b === void 0 ? void 0 : _b.login)
         });
     });
 });

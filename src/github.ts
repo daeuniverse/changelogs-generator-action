@@ -55,6 +55,6 @@ export const getPulls = async (): Promise<PullRequest[]> => {
       labels: pr.labels.map(i => i.name) as string[],
       html_url: pr.html_url as string,
       merged_at: pr.merged_at as string,
-      is_new_contributor: contributors.includes(pr.user?.login)
+      is_new_contributor: !contributors.includes(pr.user?.login)
     }))
 }

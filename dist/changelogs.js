@@ -33,5 +33,6 @@ exports.default = (_a) => {
 ${commits}
 
 ${newContributors.length > 0 && "## New Contributors"}
+
 ${newContributors.length > 0 && newContributors}`;
 };
