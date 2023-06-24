@@ -69,6 +69,21 @@ jobs:
           echo "${{ steps.changelog.outputs.changelogs }}"
 ```
 
+## Inputs
+
+| Name              | Description          |
+| ----------------- | -------------------- |
+| `previousRelease` | Previous release tag |
+| `futureRelease`   | Future release tag   |
+| `token`           | Github auth token    |
+| `verbose`         | Verbose mode         |
+
+## Outputs
+
+| Name         | Description                      |
+| ------------ | -------------------------------- |
+| `changelogs` | Contents of generated changelogs |
+
 ## References
 
 - [Creating a JavaScript action](https://docs.github.com/en/actions/creating-actions/creating-a-javascript-action)
