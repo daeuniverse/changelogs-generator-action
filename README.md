@@ -38,8 +38,6 @@ git commit -a -m "prod dependencies"
 git push origin releases/v1
 ```
 
-See the [actions tab](https://github.com/actions/typescript-action/actions) for runs of this action! :rocket:
-
 ## Usage
 
 ```yaml
