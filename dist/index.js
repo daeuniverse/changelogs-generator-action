@@ -25,6 +25,10 @@ exports["default"] = (_a) => {
     const commits = props.prs
         .map((pr) => `* ${pr.title} in [#${pr.number}](${pr.html_url}) by (@${pr.author})`)
         .join("\n");
+    const newContributors = props.prs
+        .filter((pr) => pr.is_new_contributor)
+        .map((pr) => `## New Contributors
+* @${pr.author} made their first contribution in [#${pr.number}](${pr.html_url})`);
     return `## Context
 
 🚀 @daebot proposed the following changelogs for release v0.1.0 generated in [workflow run](https://github.com/${owner}/${repo}/actions/runs/${props.context.runId}).
@@ -32,8 +36,10 @@ exports["default"] = (_a) => {
 ## Changelogs
 
 <!-- BEGIN CHANGELOGS -->
-[Full Changelog](https://github.com/${owner}/${repo}/compare/${props.inputs.previousRelease}...${props.inputs.futureRelease})
-${commits}`;
+**Full Changelog**: https://github.com/${owner}/${repo}/compare/${props.inputs.previousRelease}...${props.inputs.futureRelease})
+${commits}
+
+${newContributors}`;
 };
 
 
@@ -82,19 +88,26 @@ const getPulls = () => __awaiter(void 0, void 0, void 0, function* () {
         per_page: 1
     })
         .then(res => res.data[0]);
+    const contributors = yield octokit.rest.repos
+        .listContributors({
+        repo: context.repo.repo,
+        owner: context.repo.owner
+    })
+        .then(res => res.data.map(person => person.name));
     return prs
         .filter(pr => {
         return pr.merged_at && pr.merged_at > prevRelease.created_at;
     })
         .map(pr => {
-        var _a;
+        var _a, _b;
         return ({
             number: pr.number,
             author: (_a = pr.user) === null || _a === void 0 ? void 0 : _a.login,
             title: pr.title,
             labels: pr.labels.map(i => i.name),
             html_url: pr.html_url,
-            merged_at: pr.merged_at
+            merged_at: pr.merged_at,
+            is_new_contributor: contributors.includes((_b = pr.user) === null || _b === void 0 ? void 0 : _b.login)
         });
     });
 });

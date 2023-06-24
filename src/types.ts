@@ -5,4 +5,5 @@ export type PullRequest = {
   labels: string[]
   html_url: string
   merged_at: string
+  is_new_contributor: boolean
 }

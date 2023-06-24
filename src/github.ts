@@ -35,6 +35,13 @@ export const getPulls = async (): Promise<PullRequest[]> => {
     })
     .then(res => res.data[0])
 
+  const contributors = await octokit.rest.repos
+    .listContributors({
+      repo: context.repo.repo,
+      owner: context.repo.owner
+    })
+    .then(res => res.data.map(person => person.name))
+
   return prs
     .filter(pr => {
       return pr.merged_at && pr.merged_at > prevRelease.created_at
@@ -45,6 +52,7 @@ export const getPulls = async (): Promise<PullRequest[]> => {
       title: pr.title as string,
       labels: pr.labels.map(i => i.name) as string[],
       html_url: pr.html_url as string,
-      merged_at: pr.merged_at as string
+      merged_at: pr.merged_at as string,
+      is_new_contributor: contributors.includes(pr.user?.login as string)
     }))
 }

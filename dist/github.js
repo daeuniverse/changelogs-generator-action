@@ -37,19 +37,26 @@ const getPulls = () => __awaiter(void 0, void 0, void 0, function* () {
         per_page: 1
     })
         .then(res => res.data[0]);
+    const contributors = yield octokit.rest.repos
+        .listContributors({
+        repo: context.repo.repo,
+        owner: context.repo.owner
+    })
+        .then(res => res.data.map(person => person.name));
     return prs
         .filter(pr => {
         return pr.merged_at && pr.merged_at > prevRelease.created_at;
     })
         .map(pr => {
-        var _a;
+        var _a, _b;
         return ({
             number: pr.number,
             author: (_a = pr.user) === null || _a === void 0 ? void 0 : _a.login,
             title: pr.title,
             labels: pr.labels.map(i => i.name),
             html_url: pr.html_url,
-            merged_at: pr.merged_at
+            merged_at: pr.merged_at,
+            is_new_contributor: contributors.includes((_b = pr.user) === null || _b === void 0 ? void 0 : _b.login)
         });
     });
 });

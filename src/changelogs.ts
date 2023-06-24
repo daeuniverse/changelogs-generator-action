@@ -11,6 +11,13 @@ export default ({...props}) => {
     )
     .join("\n")
 
+  const newContributors = props.prs
+    .filter((pr: PullRequest) => pr.is_new_contributor)
+    .map(
+      (pr: PullRequest) => `## New Contributors
+* @${pr.author} made their first contribution in [#${pr.number}](${pr.html_url})`
+    )
+
   return `## Context
 
 🚀 @daebot proposed the following changelogs for release v0.1.0 generated in [workflow run](https://github.com/${owner}/${repo}/actions/runs/${props.context.runId}).
@@ -18,6 +25,8 @@ export default ({...props}) => {
 ## Changelogs
 
 <!-- BEGIN CHANGELOGS -->
-[Full Changelog](https://github.com/${owner}/${repo}/compare/${props.inputs.previousRelease}...${props.inputs.futureRelease})
-${commits}`
+**Full Changelog**: https://github.com/${owner}/${repo}/compare/${props.inputs.previousRelease}...${props.inputs.futureRelease})
+${commits}
+
+${newContributors}`
 }
