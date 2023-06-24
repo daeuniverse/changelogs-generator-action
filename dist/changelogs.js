@@ -13,8 +13,8 @@ var __rest = (this && this.__rest) || function (s, e) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = (_a) => {
     var props = __rest(_a, []);
-    const owner = props.context.payload.repository.owner;
-    const repo = props.context.payload.repository.repo;
+    const owner = props.context.payload.repo.owner;
+    const repo = props.context.payload.repo.repo;
     const commits = props.prs
         .map((pr) => `* ${pr.title} in [#${pr.number}](${pr.html_url}) by (@${pr.author})`)
         .join("\n");
@@ -29,10 +29,11 @@ exports.default = (_a) => {
 ## Changelogs
 
 <!-- BEGIN CHANGELOGS -->
-**Full Changelog**: https://github.com/${owner}/${repo}/compare/${props.inputs.previousRelease}...${props.inputs.futureRelease})
 ${commits}
 
-${newContributors.length > 0 && "## New Contributors"}
+**Full Changelog**: https://github.com/${owner}/${repo}/compare/${props.inputs.previousRelease}...${props.inputs.futureRelease})
 
-${newContributors.length > 0 && newContributors}`;
+${newContributors.length > 0 ? "## New Contributors" : ""}
+
+${newContributors.length > 0 ? newContributors : ""}`;
 };

@@ -1,8 +1,8 @@
 import {PullRequest} from "./types"
 
 export default ({...props}) => {
-  const owner = props.context.payload.repository.owner
-  const repo = props.context.payload.repository.repo
+  const owner = props.context.payload.repo.owner
+  const repo = props.context.payload.repo.repo
 
   const commits: string[] = props.prs
     .map(
@@ -28,10 +28,11 @@ export default ({...props}) => {
 ## Changelogs
 
 <!-- BEGIN CHANGELOGS -->
+${commits}
+
 **Full Changelog**: https://github.com/${owner}/${repo}/compare/${
     props.inputs.previousRelease
   }...${props.inputs.futureRelease})
-${commits}
 
 ${newContributors.length > 0 ? "## New Contributors" : ""}
 
