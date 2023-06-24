@@ -4,29 +4,34 @@ export default ({...props}) => {
   const owner = props.context.payload.repository.owner
   const repo = props.context.payload.repository.repo
 
-  const commits = props.prs
+  const commits: string[] = props.prs
     .map(
       (pr: PullRequest) =>
         `* ${pr.title} in [#${pr.number}](${pr.html_url}) by (@${pr.author})`
     )
     .join("\n")
 
-  const newContributors = props.prs
+  const newContributors: string[] = props.prs
     .filter((pr: PullRequest) => pr.is_new_contributor)
     .map(
-      (pr: PullRequest) => `## New Contributors
-* @${pr.author} made their first contribution in [#${pr.number}](${pr.html_url})`
+      (pr: PullRequest) =>
+        `* @${pr.author} made their first contribution in [#${pr.number}](${pr.html_url})`
     )
 
   return `## Context
 
-🚀 @daebot proposed the following changelogs for release v0.1.0 generated in [workflow run](https://github.com/${owner}/${repo}/actions/runs/${props.context.runId}).
+🚀 @daebot proposed the following changelogs for release v0.1.0 generated in [workflow run](https://github.com/${owner}/${repo}/actions/runs/${
+    props.context.runId
+  }).
 
 ## Changelogs
 
 <!-- BEGIN CHANGELOGS -->
-**Full Changelog**: https://github.com/${owner}/${repo}/compare/${props.inputs.previousRelease}...${props.inputs.futureRelease})
+**Full Changelog**: https://github.com/${owner}/${repo}/compare/${
+    props.inputs.previousRelease
+  }...${props.inputs.futureRelease})
 ${commits}
 
-${newContributors}`
+${newContributors.length > 0 && "## New Contributors"}
+${newContributors.length > 0 && newContributors}`
 }

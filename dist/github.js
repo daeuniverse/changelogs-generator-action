@@ -43,6 +43,7 @@ const getPulls = () => __awaiter(void 0, void 0, void 0, function* () {
         owner: context.repo.owner
     })
         .then(res => res.data.map(person => person.name));
+    console.log(`Contributors: `, contributors);
     return prs
         .filter(pr => {
         return pr.merged_at && pr.merged_at > prevRelease.created_at;

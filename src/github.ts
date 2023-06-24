@@ -42,6 +42,8 @@ export const getPulls = async (): Promise<PullRequest[]> => {
     })
     .then(res => res.data.map(person => person.name))
 
+  console.log(`Contributors: `, contributors)
+
   return prs
     .filter(pr => {
       return pr.merged_at && pr.merged_at > prevRelease.created_at
