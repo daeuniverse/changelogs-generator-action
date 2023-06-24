@@ -1,19 +1,21 @@
 # Changelogs Generator Action
 
+Automatically generate changelogs from your `release tags` based on `pull requests` history on GitHub,
+
 ## Boostrap
 
 Install the dependencies
 
 ```bash
-$ npm install
+npm install
 ```
 
-## Deploy
+## Package
 
 ### Build the typescript and package it for distribution
 
 ```bash
-$ npm run build && npm run package
+npm run build && npm run package
 ```
 
 ### Publish to a distribution branch
@@ -33,7 +35,39 @@ See the [actions tab](https://github.com/actions/typescript-action/actions) for 
 
 ## Usage
 
-TBD.
+```yaml
+name: Generate Changelogs
+run-name: "chore(release): generate changelogs for ${{ inputs.previous_release_tag }}..${{ inputs.future_release_tag }}"
+
+on:
+  workflow_dispatch:
+    inputs:
+      previous_release_tag:
+        required: true
+        description: previous release tag
+      future_release_tag:
+        required: true
+        description: future release tag
+
+jobs:
+  build:
+    name: Generate changelogs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate release changelogs
+        uses: daeuniverse/changelogs-generator-action@test
+        id: changelog
+        with:
+          # https://github.com/daeuniverse/changelogs-generator-action
+          previousRelease: ${{ inputs.previous_release_tag }}
+          futureRelease: ${{ inputs.future_release_tag }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Print outputs
+        shell: bash
+        run: |
+          echo "${{ steps.changelog.outputs.changelogs }}"
+```
 
 ## References
 
