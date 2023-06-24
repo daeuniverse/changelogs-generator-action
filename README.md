@@ -1,6 +1,6 @@
-# Changelogs Generator Action
+# 🌌 Changelogs Generator Action
 
-Automatically generate changelogs from your `release tags` based on `pull requests` history on GitHub,
+Automatically generate changelogs from your `release tags` based on `pull requests` history on GitHub
 
 ## Boostrap
 
