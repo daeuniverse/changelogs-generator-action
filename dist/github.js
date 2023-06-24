@@ -42,14 +42,14 @@ const getPulls = () => __awaiter(void 0, void 0, void 0, function* () {
         repo: context.repo.repo,
         owner: context.repo.owner
     })
-        .then(res => res.data.map(person => person.name));
+        .then(res => res.data.map(person => person));
     console.log(`Contributors: `, contributors);
     return prs
         .filter(pr => {
         return pr.merged_at && pr.merged_at > prevRelease.created_at;
     })
         .map(pr => {
-        var _a, _b;
+        var _a;
         return ({
             number: pr.number,
             author: (_a = pr.user) === null || _a === void 0 ? void 0 : _a.login,
@@ -57,7 +57,7 @@ const getPulls = () => __awaiter(void 0, void 0, void 0, function* () {
             labels: pr.labels.map(i => i.name),
             html_url: pr.html_url,
             merged_at: pr.merged_at,
-            is_new_contributor: contributors.includes((_b = pr.user) === null || _b === void 0 ? void 0 : _b.login)
+            is_new_contributor: true
         });
     });
 });
