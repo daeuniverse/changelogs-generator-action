@@ -1,10 +1,12 @@
 FROM node:slim
 
+ARG FUTURE_RELEASE
+
 WORKDIR /app
 
 COPY generate-changelogs.mjs ./
-COPY entrypoint.sh ./
+COPY entrypoint.sh /entrypoint.sh
 
-RUN chmod +x entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-ENTRYPOINT ["/app/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
