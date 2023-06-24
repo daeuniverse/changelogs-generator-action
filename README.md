@@ -27,7 +27,7 @@ npm run build && npm run package
 
 ### Publish to a distribution branch
 
-> **Note:** Actions are run from GitHub repos so we will checkin the packed dist folder.
+> **Note**: Actions are run from GitHub repos so we will checkin the packed dist folder.
 
 Then run [ncc](https://github.com/zeit/ncc) and push the results:
 
