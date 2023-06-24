@@ -1,6 +1,6 @@
-# 🌌 Changelogs Generator Action
+# Changelogs Generator Action
 
-Automatically generate changelogs from your `release tags` based on `pull requests` history on GitHub
+🌌 Automatically generate changelogs from your `release tags` based on `pull requests` history on GitHub
 
 ## Boostrap
 
@@ -55,7 +55,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Generate release changelogs
-        uses: daeuniverse/changelogs-generator-action@test
+        uses: daeuniverse/changelogs-generator-action@main
         id: changelog
         with:
           # https://github.com/daeuniverse/changelogs-generator-action
