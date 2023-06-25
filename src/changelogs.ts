@@ -56,13 +56,13 @@ export default ({...props}) => {
 
 <!-- BEGIN CHANGELOGS -->
 ${commits.feature.length > 0 ? "### Features" : ""}
-${commits.feature}
+${commits.feature.length > 0 ? commits.feature : ""}
 
 ${commits.fix.length > 0 ? "### Bug Fixes" : ""}
-${commits.fix}
+${commits.fix.length > 0 ? commits.fix : ""}
 
 ${commits.other.length > 0 ? "### Others" : ""}
-${commits.other}
+${commits.other.length > 0 ? commits.other : ""}
 
 **Full Changelog**: https://github.com/${owner}/${repo}/compare/${
     props.inputs.previousRelease
