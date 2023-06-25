@@ -54,7 +54,7 @@ ${commits.feature}
 ${commits.fix.length > 0 ? "### Bug Fixes" : ""}
 ${commits.fix}
 
-${commits.other.length > 0 ? "### Other Changes" : ""}
+${commits.other.length > 0 ? "### Others" : ""}
 ${commits.other}
 
 **Full Changelog**: https://github.com/${owner}/${repo}/compare/${props.inputs.previousRelease}...${props.inputs.futureRelease}
