@@ -88,6 +88,7 @@ jobs:
 | Name         | Description                      |
 | ------------ | -------------------------------- |
 | `changelogs` | Contents of generated changelogs |
+| `time`       | Timestamp                        |
 
 ## References
 
