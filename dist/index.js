@@ -55,13 +55,13 @@ exports["default"] = (_a) => {
 ## Changelogs
 
 <!-- BEGIN CHANGELOGS -->
-### Features
+${commits.feature.length > 0 ? "### Features" : ""}
 ${commits.feature}
 
-### Bug Fixes
+${commits.fix.length > 0 ? "### Bug Fixes" : ""}
 ${commits.fix}
 
-### Other Changes
+${commits.other.length > 0 ? "### Other Changes" : ""}
 ${commits.other}
 
 **Full Changelog**: https://github.com/${owner}/${repo}/compare/${props.inputs.previousRelease}...${props.inputs.futureRelease}
