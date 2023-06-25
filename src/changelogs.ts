@@ -4,12 +4,38 @@ export default ({...props}) => {
   const owner = props.context.repo.owner
   const repo = props.context.repo.repo
 
-  const commits: string[] = props.prs
-    .map(
-      (pr: PullRequest) =>
-        `* ${pr.title} in [#${pr.number}](${pr.html_url}) by (@${pr.author})`
-    )
-    .join("\n")
+  const formatMsg = (pr: PullRequest) =>
+    `* ${pr.title} in [#${pr.number}](${pr.html_url}) by (@${pr.author})`
+
+  const commits = {
+    feature: props.prs
+      .filter(
+        (pr: PullRequest) =>
+          pr.title.startsWith("feat") || pr.title.startsWith("optimize")
+      )
+      .map((pr: PullRequest) => formatMsg(pr))
+      .join("\n"),
+    fix: props.prs
+      .filter(
+        (pr: PullRequest) =>
+          pr.title.startsWith("fix") ||
+          pr.title.startsWith("hotfix") ||
+          pr.title.startsWith("patch")
+      )
+      .map((pr: PullRequest) => formatMsg(pr))
+      .join("\n"),
+    other: props.prs
+      .filter(
+        (pr: PullRequest) =>
+          pr.title.startsWith("chore") ||
+          pr.title.startsWith("refactor") ||
+          pr.title.startsWith("ci") ||
+          pr.title.startsWith("doc") ||
+          pr.title.startsWith("style")
+      )
+      .map((pr: PullRequest) => formatMsg(pr))
+      .join("\n")
+  }
 
   const newContributors: string[] = props.prs
     .filter((pr: PullRequest) => pr.is_new_contributor)
@@ -29,7 +55,14 @@ export default ({...props}) => {
 ## Changelogs
 
 <!-- BEGIN CHANGELOGS -->
-${commits}
+${commits.feature.length > 0 ? "### Features" : ""}
+${commits.feature}
+
+${commits.fix.length > 0 ? "### Bug Fixes" : ""}
+${commits.fix}
+
+${commits.other.length > 0 ? "### Others" : ""}
+${commits.other}
 
 **Full Changelog**: https://github.com/${owner}/${repo}/compare/${
     props.inputs.previousRelease
