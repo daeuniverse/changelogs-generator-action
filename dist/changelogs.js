@@ -15,25 +15,52 @@ exports.default = (_a) => {
     var props = __rest(_a, []);
     const owner = props.context.repo.owner;
     const repo = props.context.repo.repo;
-    const commits = props.prs
-        .map((pr) => `* ${pr.title} in [#${pr.number}](${pr.html_url}) by (@${pr.author})`)
-        .join("\n");
+    const formatMsg = (pr) => `* ${pr.title} in [#${pr.number}](${pr.html_url}) by (@${pr.author})`;
+    const commits = {
+        feature: props.prs
+            .filter((pr) => pr.title.startsWith("feat") || pr.title.startsWith("optimize"))
+            .map((pr) => formatMsg(pr))
+            .join("\n"),
+        fix: props.prs
+            .filter((pr) => pr.title.startsWith("fix") ||
+            pr.title.startsWith("hotfix") ||
+            pr.title.startsWith("patch"))
+            .map((pr) => formatMsg(pr))
+            .join("\n"),
+        other: props.prs
+            .filter((pr) => pr.title.startsWith("chore") ||
+            pr.title.startsWith("refactor") ||
+            pr.title.startsWith("ci") ||
+            pr.title.startsWith("doc") ||
+            pr.title.startsWith("style"))
+            .map((pr) => formatMsg(pr))
+            .join("\n")
+    };
     const newContributors = props.prs
         .filter((pr) => pr.is_new_contributor)
         .map((pr) => `* @${pr.author} made their first contribution in [#${pr.number}](${pr.html_url})`)
         .join("\n");
-    return `## Context
+    return `
+## Context
 
 🚀 @daebot proposed the following changelogs for release v0.1.0 generated in [workflow run](https://github.com/${owner}/${repo}/actions/runs/${props.context.runId}).
 
 ## Changelogs
 
 <!-- BEGIN CHANGELOGS -->
-${commits}
+### Features
+${commits.feature}
+
+### Bug Fixes
+${commits.fix}
+
+### Other Changes
+${commits.other}
 
 **Full Changelog**: https://github.com/${owner}/${repo}/compare/${props.inputs.previousRelease}...${props.inputs.futureRelease}
 
 ${newContributors.length > 0 ? "## New Contributors" : ""}
 
-${newContributors.length > 0 ? newContributors : ""}`;
+${newContributors.length > 0 ? newContributors : ""}
+`.trim();
 };
