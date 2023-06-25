@@ -4,16 +4,16 @@ export default ({...props}) => {
   const owner = props.context.repo.owner
   const repo = props.context.repo.repo
 
+  const formatMsg = (pr: PullRequest) =>
+    `* ${pr.title} in [#${pr.number}](${pr.html_url}) by (@${pr.author})`
+
   const commits = {
     feature: props.prs
       .filter(
         (pr: PullRequest) =>
           pr.title.startsWith("feat") || pr.title.startsWith("optimize")
       )
-      .map(
-        (pr: PullRequest) =>
-          `* ${pr.title} in [#${pr.number}](${pr.html_url}) by (@${pr.author})`
-      )
+      .map((pr: PullRequest) => formatMsg(pr))
       .join("\n"),
     fix: props.prs
       .filter(
@@ -22,10 +22,7 @@ export default ({...props}) => {
           pr.title.startsWith("hotfix") ||
           pr.title.startsWith("patch")
       )
-      .map(
-        (pr: PullRequest) =>
-          `* ${pr.title} in [#${pr.number}](${pr.html_url}) by (@${pr.author})`
-      )
+      .map((pr: PullRequest) => formatMsg(pr))
       .join("\n"),
     other: props.prs
       .filter(
@@ -36,10 +33,7 @@ export default ({...props}) => {
           pr.title.startsWith("doc") ||
           pr.title.startsWith("style")
       )
-      .map(
-        (pr: PullRequest) =>
-          `* ${pr.title} in [#${pr.number}](${pr.html_url}) by (@${pr.author})`
-      )
+      .map((pr: PullRequest) => formatMsg(pr))
       .join("\n")
   }
 
