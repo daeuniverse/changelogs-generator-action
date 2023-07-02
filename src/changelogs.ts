@@ -51,7 +51,7 @@ export default ({...props}: ChangelogsInputs) => {
     .filter((pr: PullRequest) => pr.is_new_contributor)
     .map(
       (pr: PullRequest) =>
-        `* @${pr.author} made their first contribution in [#${pr.number}](${pr.html_url})`
+        `- @${pr.author} made their first contribution in [#${pr.number}](${pr.html_url})`
     )
     .join("\n")
 
@@ -75,7 +75,7 @@ ${commits.other.length > 0 ? "### Others" : ""}
 ${commits.other.length > 0 ? commits.other : ""}
 
 ${
-  repo === "dae"
+  repo === "dae-1"
     ? `**Example Config**: https://github.com/daeuniverse/dae/blob/${props.inputs.futureRelease}/example.dae`
     : ""
 }
