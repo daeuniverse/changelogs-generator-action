@@ -1,11 +1,21 @@
+import * as github from "@actions/github"
 import {PullRequest} from "./types"
 
-export default ({...props}) => {
+type ChangelogsInputs = {
+  context: typeof github.context
+  inputs: {
+    previousRelease: string
+    futureRelease: string
+  }
+  prs: PullRequest[]
+}
+
+export default ({...props}: ChangelogsInputs) => {
   const owner = props.context.repo.owner
   const repo = props.context.repo.repo
 
   const formatMsg = (pr: PullRequest) =>
-    `* ${pr.title} in [#${pr.number}](${pr.html_url}) by (@${pr.author})`
+    `- ${pr.title} in [#${pr.number}](${pr.html_url}) by (@${pr.author})`
 
   const commits = {
     feature: props.prs
@@ -37,13 +47,24 @@ export default ({...props}) => {
       .join("\n")
   }
 
-  const newContributors: string[] = props.prs
+  const newContributors = props.prs
     .filter((pr: PullRequest) => pr.is_new_contributor)
     .map(
       (pr: PullRequest) =>
-        `* @${pr.author} made their first contribution in [#${pr.number}](${pr.html_url})`
+        `- @${pr.author} made their first contribution in [#${pr.number}](${pr.html_url})`
     )
     .join("\n")
+
+  const content = `
+${commits.feature.length > 0 ? "### Features" : ""}
+${commits.feature.length > 0 ? commits.feature : ""}
+
+${commits.fix.length > 0 ? "### Bug Fixes" : ""}
+${commits.fix.length > 0 ? commits.fix : ""}
+
+${commits.other.length > 0 ? "### Others" : ""}
+${commits.other.length > 0 ? commits.other : ""}
+  `.trim()
 
   return `
 ## Context
@@ -55,14 +76,13 @@ export default ({...props}) => {
 ## Changelogs
 
 <!-- BEGIN CHANGELOGS -->
-${commits.feature.length > 0 ? "### Features" : ""}
-${commits.feature.length > 0 ? commits.feature : ""}
+${content}
 
-${commits.fix.length > 0 ? "### Bug Fixes" : ""}
-${commits.fix.length > 0 ? commits.fix : ""}
-
-${commits.other.length > 0 ? "### Others" : ""}
-${commits.other.length > 0 ? commits.other : ""}
+${
+  repo === "dae"
+    ? `**Example Config**: https://github.com/daeuniverse/dae/blob/${props.inputs.futureRelease}/example.dae`
+    : ""
+}
 
 **Full Changelog**: https://github.com/${owner}/${repo}/compare/${
     props.inputs.previousRelease
