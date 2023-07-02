@@ -55,6 +55,17 @@ export default ({...props}: ChangelogsInputs) => {
     )
     .join("\n")
 
+  const content = `
+${commits.feature.length > 0 ? "### Features" : ""}
+${commits.feature.length > 0 ? commits.feature : ""}
+
+${commits.fix.length > 0 ? "### Bug Fixes" : ""}
+${commits.fix.length > 0 ? commits.fix : ""}
+
+${commits.other.length > 0 ? "### Others" : ""}
+${commits.other.length > 0 ? commits.other : ""}
+  `.trim()
+
   return `
 ## Context
 
@@ -65,14 +76,7 @@ export default ({...props}: ChangelogsInputs) => {
 ## Changelogs
 
 <!-- BEGIN CHANGELOGS -->
-${commits.feature.length > 0 ? "### Features" : ""}
-${commits.feature.length > 0 ? commits.feature : ""}
-
-${commits.fix.length > 0 ? "### Bug Fixes" : ""}
-${commits.fix.length > 0 ? commits.fix : ""}
-
-${commits.other.length > 0 ? "### Others" : ""}
-${commits.other.length > 0 ? commits.other : ""}
+${content}
 
 ${
   repo === "dae-1"
