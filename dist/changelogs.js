@@ -60,7 +60,7 @@ ${commits.other.length > 0 ? commits.other : ""}
 <!-- BEGIN CHANGELOGS -->
 ${content}
 
-${repo === "dae-1"
+${repo === "dae"
         ? `**Example Config**: https://github.com/daeuniverse/dae/blob/${props.inputs.futureRelease}/example.dae`
         : ""}
 
