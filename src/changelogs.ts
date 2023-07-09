@@ -1,21 +1,11 @@
-import * as github from "@actions/github"
 import {PullRequest} from "./types"
 
-type ChangelogsInputs = {
-  context: typeof github.context
-  inputs: {
-    previousRelease: string
-    futureRelease: string
-  }
-  prs: PullRequest[]
-}
-
-export default ({...props}: ChangelogsInputs) => {
+export default ({...props}) => {
   const owner = props.context.repo.owner
   const repo = props.context.repo.repo
 
   const formatMsg = (pr: PullRequest) =>
-    `- ${pr.title} in [#${pr.number}](${pr.html_url}) by (@${pr.author})`
+    `* ${pr.title} in [#${pr.number}](${pr.html_url}) by (@${pr.author})`
 
   const commits = {
     feature: props.prs
@@ -47,24 +37,13 @@ export default ({...props}: ChangelogsInputs) => {
       .join("\n")
   }
 
-  const newContributors = props.prs
+  const newContributors: string[] = props.prs
     .filter((pr: PullRequest) => pr.is_new_contributor)
     .map(
       (pr: PullRequest) =>
-        `- @${pr.author} made their first contribution in [#${pr.number}](${pr.html_url})`
+        `* @${pr.author} made their first contribution in [#${pr.number}](${pr.html_url})`
     )
     .join("\n")
-
-  const content = `
-${commits.feature.length > 0 ? "### Features" : ""}
-${commits.feature.length > 0 ? commits.feature : ""}
-
-${commits.fix.length > 0 ? "### Bug Fixes" : ""}
-${commits.fix.length > 0 ? commits.fix : ""}
-
-${commits.other.length > 0 ? "### Others" : ""}
-${commits.other.length > 0 ? commits.other : ""}
-  `.trim()
 
   return `
 ## Context
@@ -76,13 +55,14 @@ ${commits.other.length > 0 ? commits.other : ""}
 ## Changelogs
 
 <!-- BEGIN CHANGELOGS -->
-${content}
+${commits.feature.length > 0 ? "### Features" : ""}
+${commits.feature.length > 0 ? commits.feature : ""}
 
-${
-  repo === "dae"
-    ? `**Example Config**: https://github.com/daeuniverse/dae/blob/${props.inputs.futureRelease}/example.dae`
-    : ""
-}
+${commits.fix.length > 0 ? "### Bug Fixes" : ""}
+${commits.fix.length > 0 ? commits.fix : ""}
+
+${commits.other.length > 0 ? "### Others" : ""}
+${commits.other.length > 0 ? commits.other : ""}
 
 **Full Changelog**: https://github.com/${owner}/${repo}/compare/${
     props.inputs.previousRelease
