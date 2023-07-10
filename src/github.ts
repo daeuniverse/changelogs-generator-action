@@ -49,6 +49,7 @@ export const getPulls = async (): Promise<PullRequest[]> => {
     .map(pr => ({
       number: pr.number,
       author: pr.user?.login || "",
+      assignees: pr.assignees ? pr.assignees.map(item => item.login) : [],
       title: pr.title || "",
       labels: pr.labels.map(i => i.name),
       html_url: pr.html_url,
