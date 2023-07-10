@@ -50,9 +50,14 @@ ${commits.fix.length > 0 ? commits.fix : ""}
 ${commits.other.length > 0 ? "### Others" : ""}
 ${commits.other.length > 0 ? commits.other : ""}
 
-${repo === "dae-1"
+${repo === "dae"
         ? `**Example Config**: https://github.com/daeuniverse/dae/blob/${props.inputs.futureRelease}/example.dae`
         : ""}
+  `.trim();
+    const newContributorsContent = `
+${newContributors.length > 0 ? "### New Contributors" : ""}
+
+${newContributors.length > 0 ? newContributors : ""}
   `.trim();
     return `
 ## Context
@@ -66,8 +71,6 @@ ${content}
 
 **Full Changelog**: https://github.com/${owner}/${repo}/compare/${props.inputs.previousRelease}...${props.inputs.futureRelease}
 
-${newContributors.length > 0 ? "### New Contributors" : ""}
-
-${newContributors.length > 0 ? newContributors : ""}
+${newContributorsContent}
 `.trim();
 };

@@ -66,30 +66,30 @@ ${commits.other.length > 0 ? "### Others" : ""}
 ${commits.other.length > 0 ? commits.other : ""}
 
 ${
-  repo === "dae-1"
+  repo === "dae"
     ? `**Example Config**: https://github.com/daeuniverse/dae/blob/${props.inputs.futureRelease}/example.dae`
     : ""
 }
   `.trim()
 
+  const newContributorsContent = `
+${newContributors.length > 0 ? "### New Contributors" : ""}
+
+${newContributors.length > 0 ? newContributors : ""}
+  `.trim()
+
   return `
 ## Context
 
-🚀 @daebot proposed the following changelogs for release v0.1.0 generated in [workflow run](https://github.com/${owner}/${repo}/actions/runs/${
-    props.context.runId
-  }).
+🚀 @daebot proposed the following changelogs for release v0.1.0 generated in [workflow run](https://github.com/${owner}/${repo}/actions/runs/${props.context.runId}).
 
 ## Changelogs
 
 <!-- BEGIN CHANGELOGS -->
 ${content}
 
-**Full Changelog**: https://github.com/${owner}/${repo}/compare/${
-    props.inputs.previousRelease
-  }...${props.inputs.futureRelease}
+**Full Changelog**: https://github.com/${owner}/${repo}/compare/${props.inputs.previousRelease}...${props.inputs.futureRelease}
 
-${newContributors.length > 0 ? "### New Contributors" : ""}
-
-${newContributors.length > 0 ? newContributors : ""}
+${newContributorsContent}
 `.trim()
 }
