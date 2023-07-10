@@ -49,6 +49,10 @@ ${commits.fix.length > 0 ? commits.fix : ""}
 
 ${commits.other.length > 0 ? "### Others" : ""}
 ${commits.other.length > 0 ? commits.other : ""}
+
+${repo === "dae"
+        ? `**Example Config**: https://github.com/daeuniverse/dae/blob/${props.inputs.futureRelease}/example.dae`
+        : ""}
   `.trim();
     return `
 ## Context
@@ -59,10 +63,6 @@ ${commits.other.length > 0 ? commits.other : ""}
 
 <!-- BEGIN CHANGELOGS -->
 ${content}
-
-${repo === "dae"
-        ? `**Example Config**: https://github.com/daeuniverse/dae/blob/${props.inputs.futureRelease}/example.dae`
-        : ""}
 
 **Full Changelog**: https://github.com/${owner}/${repo}/compare/${props.inputs.previousRelease}...${props.inputs.futureRelease}
 
