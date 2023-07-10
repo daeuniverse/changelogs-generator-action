@@ -1,6 +1,7 @@
 export type PullRequest = {
   number: number
   author: string
+  assignees: string[]
   title: string
   labels: string[]
   html_url: string

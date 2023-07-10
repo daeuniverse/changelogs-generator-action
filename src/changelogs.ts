@@ -15,7 +15,9 @@ export default ({...props}: ChangelogsInputs) => {
   const repo = props.context.repo.repo
 
   const formatMsg = (pr: PullRequest) =>
-    `- ${pr.title} in [#${pr.number}](${pr.html_url}) by (@${pr.author})`
+    `- ${pr.title} in [#${pr.number}](${pr.html_url}) by (${
+      pr.assignees.length > 0 ? pr.assignees : pr.author
+    })`
 
   const commits = {
     feature: props.prs
