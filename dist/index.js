@@ -66,7 +66,7 @@ ${commits.other.length > 0 ? commits.other : ""}
 
 **Full Changelog**: https://github.com/${owner}/${repo}/compare/${props.inputs.previousRelease}...${props.inputs.futureRelease}
 
-${newContributors.length > 0 ? "## New Contributors" : ""}
+${newContributors.length > 0 ? "### New Contributors" : ""}
 
 ${newContributors.length > 0 ? newContributors : ""}
 `.trim();

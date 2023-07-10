@@ -68,7 +68,7 @@ ${commits.other.length > 0 ? commits.other : ""}
     props.inputs.previousRelease
   }...${props.inputs.futureRelease}
 
-${newContributors.length > 0 ? "## New Contributors" : ""}
+${newContributors.length > 0 ? "### New Contributors" : ""}
 
 ${newContributors.length > 0 ? newContributors : ""}
 `.trim()
