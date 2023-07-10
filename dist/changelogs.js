@@ -15,7 +15,7 @@ exports.default = (_a) => {
     var props = __rest(_a, []);
     const owner = props.context.repo.owner;
     const repo = props.context.repo.repo;
-    const formatMsg = (pr) => `* ${pr.title} in [#${pr.number}](${pr.html_url}) by (@${pr.author})`;
+    const formatMsg = (pr) => `- ${pr.title} in [#${pr.number}](${pr.html_url}) by (@${pr.author})`;
     const commits = {
         feature: props.prs
             .filter((pr) => pr.title.startsWith("feat") || pr.title.startsWith("optimize"))
@@ -38,16 +38,9 @@ exports.default = (_a) => {
     };
     const newContributors = props.prs
         .filter((pr) => pr.is_new_contributor)
-        .map((pr) => `* @${pr.author} made their first contribution in [#${pr.number}](${pr.html_url})`)
+        .map((pr) => `- @${pr.author} made their first contribution in [#${pr.number}](${pr.html_url})`)
         .join("\n");
-    return `
-## Context
-
-🚀 @daebot proposed the following changelogs for release v0.1.0 generated in [workflow run](https://github.com/${owner}/${repo}/actions/runs/${props.context.runId}).
-
-## Changelogs
-
-<!-- BEGIN CHANGELOGS -->
+    const content = `
 ${commits.feature.length > 0 ? "### Features" : ""}
 ${commits.feature.length > 0 ? commits.feature : ""}
 
@@ -56,6 +49,20 @@ ${commits.fix.length > 0 ? commits.fix : ""}
 
 ${commits.other.length > 0 ? "### Others" : ""}
 ${commits.other.length > 0 ? commits.other : ""}
+  `.trim();
+    return `
+## Context
+
+🚀 @daebot proposed the following changelogs for release v0.1.0 generated in [workflow run](https://github.com/${owner}/${repo}/actions/runs/${props.context.runId}).
+
+## Changelogs
+
+<!-- BEGIN CHANGELOGS -->
+${content}
+
+${repo === "dae"
+        ? `**Example Config**: https://github.com/daeuniverse/dae/blob/${props.inputs.futureRelease}/example.dae`
+        : ""}
 
 **Full Changelog**: https://github.com/${owner}/${repo}/compare/${props.inputs.previousRelease}...${props.inputs.futureRelease}
 
