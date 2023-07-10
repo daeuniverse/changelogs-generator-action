@@ -15,7 +15,7 @@ exports.default = (_a) => {
     var props = __rest(_a, []);
     const owner = props.context.repo.owner;
     const repo = props.context.repo.repo;
-    const formatMsg = (pr) => `- ${pr.title} in [#${pr.number}](${pr.html_url}) by (@${pr.assignees.length > 0 ? pr.assignees : pr.author})`;
+    const formatMsg = (pr) => `- ${pr.title} in [#${pr.number}](${pr.html_url}) by (${pr.assignees.length > 0 ? pr.assignees : pr.author})`;
     const commits = {
         feature: props.prs
             .filter((pr) => pr.title.startsWith("feat") || pr.title.startsWith("optimize"))
