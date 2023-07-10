@@ -69,7 +69,7 @@ ${newContributors.length > 0 ? newContributors : ""}
     return `
 ## Context
 
-🚀 @daebot proposed the following changelogs for release v0.1.0 generated in [workflow run](https://github.com/${owner}/${repo}/actions/runs/${props.context.runId}).
+🚀 @daebot proposed the following changelogs for release ${props.inputs.futureRelease} generated in [workflow run](https://github.com/${owner}/${repo}/actions/runs/${props.context.runId}).
 
 ## Changelogs
 
