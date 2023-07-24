@@ -14,7 +14,7 @@ const handler = async () => {
     console.log(`The event payload: ${JSON.stringify(context, undefined, 2)}`)
 
     // fetch pull requests since previous release
-    const prs = await getPulls()
+    const prs = await getPulls(previousRelease)
     console.log(
       `PRs since previous release: ${JSON.stringify(
         {count: prs.length, data: prs},

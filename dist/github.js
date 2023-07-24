@@ -21,7 +21,7 @@ const getContext = () => {
     return context;
 };
 exports.getContext = getContext;
-const getPulls = () => __awaiter(void 0, void 0, void 0, function* () {
+const getPulls = (releaseTag) => __awaiter(void 0, void 0, void 0, function* () {
     // list all commits since a timestamp
     const prs = yield octokit.rest.pulls
         .list({
@@ -30,13 +30,16 @@ const getPulls = () => __awaiter(void 0, void 0, void 0, function* () {
         state: "closed"
     })
         .then(res => res.data);
-    const prevRelease = yield octokit.rest.repos
-        .listReleases({
-        repo: context.repo.repo,
+    // https://octokit.github.io/rest.js/v18#git-get-commit
+    console.log(releaseTag);
+    const prevReleaseDate = yield octokit.rest.repos
+        .getCommit({
         owner: context.repo.owner,
-        per_page: 1
+        repo: context.repo.repo,
+        ref: `tags/${releaseTag}`
     })
-        .then(res => res.data[0]);
+        .then(res => { var _a; return (_a = res.data.commit.author) === null || _a === void 0 ? void 0 : _a.date; })
+        .catch(err => console.error("releaseTag", err));
     const contributors = yield octokit.rest.repos
         .listContributors({
         repo: context.repo.repo,
@@ -45,7 +48,7 @@ const getPulls = () => __awaiter(void 0, void 0, void 0, function* () {
         .then(res => res.data.map(person => person.login));
     return prs
         .filter(pr => {
-        return pr.merged_at && pr.merged_at > prevRelease.created_at;
+        return pr.merged_at && pr.merged_at > prevReleaseDate;
     })
         .map(pr => {
         var _a, _b;
