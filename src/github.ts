@@ -32,7 +32,7 @@ export const getPulls = async (releaseTag: string): Promise<PullRequest[]> => {
     .get({
       repo: context.repo.repo,
       owner: context.repo.owner,
-      ref: `ref/tags/${releaseTag}`
+      ref: `refs/tags/${releaseTag}`
     })
     .then(res => res.data)
 
