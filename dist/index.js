@@ -112,7 +112,7 @@ const getContext = () => {
     return context;
 };
 exports.getContext = getContext;
-const getPulls = () => __awaiter(void 0, void 0, void 0, function* () {
+const getPulls = (releaseTag) => __awaiter(void 0, void 0, void 0, function* () {
     // list all commits since a timestamp
     const prs = yield octokit.rest.pulls
         .list({
@@ -121,13 +121,14 @@ const getPulls = () => __awaiter(void 0, void 0, void 0, function* () {
         state: "closed"
     })
         .then(res => res.data);
+    // https://octokit.github.io/rest.js/v18#repos-get-release-by-tag
     const prevRelease = yield octokit.rest.repos
-        .listReleases({
+        .getReleaseByTag({
         repo: context.repo.repo,
         owner: context.repo.owner,
-        per_page: 1
+        tag: releaseTag
     })
-        .then(res => res.data[0]);
+        .then(res => res.data);
     const contributors = yield octokit.rest.repos
         .listContributors({
         repo: context.repo.repo,
@@ -184,7 +185,7 @@ const handler = () => __awaiter(void 0, void 0, void 0, function* () {
         const context = (0, github_1.getContext)();
         console.log(`The event payload: ${JSON.stringify(context, undefined, 2)}`);
         // fetch pull requests since previous release
-        const prs = yield (0, github_1.getPulls)();
+        const prs = yield (0, github_1.getPulls)(previousRelease);
         console.log(`PRs since previous release: ${JSON.stringify({ count: prs.length, data: prs }, undefined, 2)}`);
         // construct changelogs
         const changelogs = (0, changelogs_1.default)({

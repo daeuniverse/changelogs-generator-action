@@ -17,7 +17,7 @@ export const getContext = () => {
   return context
 }
 
-export const getPulls = async (): Promise<PullRequest[]> => {
+export const getPulls = async (releaseTag: string): Promise<PullRequest[]> => {
   // list all commits since a timestamp
   const prs = await octokit.rest.pulls
     .list({
@@ -27,13 +27,14 @@ export const getPulls = async (): Promise<PullRequest[]> => {
     })
     .then(res => res.data)
 
+  // https://octokit.github.io/rest.js/v18#repos-get-release-by-tag
   const prevRelease = await octokit.rest.repos
-    .listReleases({
+    .getReleaseByTag({
       repo: context.repo.repo,
       owner: context.repo.owner,
-      per_page: 1
+      tag: releaseTag
     })
-    .then(res => res.data[0])
+    .then(res => res.data)
 
   const contributors = await octokit.rest.repos
     .listContributors({
