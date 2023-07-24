@@ -27,14 +27,14 @@ export const getPulls = async (releaseTag: string): Promise<PullRequest[]> => {
     })
     .then(res => res.data)
 
-  // https://octokit.github.io/rest.js/v18#git-get-ref
-  const prevRelease = await octokit.rest.repos
-    .get({
-      repo: context.repo.repo,
+  // https://octokit.github.io/rest.js/v18#git-get-commit
+  const prevReleaseDate = await octokit.rest.repos
+    .getCommit({
       owner: context.repo.owner,
-      ref: `refs/tags/${releaseTag}`
+      repo: context.repo.repo,
+      ref: `tags/${releaseTag}`
     })
-    .then(res => res.data)
+    .then(res => res.data.commit.author?.date!)
 
   const contributors = await octokit.rest.repos
     .listContributors({
@@ -45,7 +45,7 @@ export const getPulls = async (releaseTag: string): Promise<PullRequest[]> => {
 
   return prs
     .filter(pr => {
-      return pr.merged_at && pr.merged_at > prevRelease.created_at
+      return pr.merged_at && pr.merged_at > prevReleaseDate
     })
     .map(pr => ({
       number: pr.number,
