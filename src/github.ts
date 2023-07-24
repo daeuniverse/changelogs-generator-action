@@ -28,6 +28,7 @@ export const getPulls = async (releaseTag: string): Promise<PullRequest[]> => {
     .then(res => res.data)
 
   // https://octokit.github.io/rest.js/v18#git-get-commit
+  console.log(releaseTag)
   const prevReleaseDate = await octokit.rest.repos
     .getCommit({
       owner: context.repo.owner,
@@ -35,6 +36,7 @@ export const getPulls = async (releaseTag: string): Promise<PullRequest[]> => {
       ref: `tags/${releaseTag}`
     })
     .then(res => res.data.commit.author?.date!)
+    .catch(err => console.error("releaseTag", err))
 
   const contributors = await octokit.rest.repos
     .listContributors({
