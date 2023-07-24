@@ -27,12 +27,12 @@ export const getPulls = async (releaseTag: string): Promise<PullRequest[]> => {
     })
     .then(res => res.data)
 
-  // https://octokit.github.io/rest.js/v18#repos-get-release-by-tag
+  // https://octokit.github.io/rest.js/v18#git-get-ref
   const prevRelease = await octokit.rest.repos
-    .getReleaseByTag({
+    .get({
       repo: context.repo.repo,
       owner: context.repo.owner,
-      tag: releaseTag
+      ref: `ref/tags/${releaseTag}`
     })
     .then(res => res.data)
 
