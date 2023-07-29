@@ -1,6 +1,6 @@
 import * as core from "@actions/core"
 import * as github from "@actions/github"
-import {PullRequest} from "./types"
+import { PullRequest } from "./types"
 
 // github octokit
 const token = core.getInput("token")
@@ -28,12 +28,13 @@ export const getPulls = async (releaseTag: string): Promise<PullRequest[]> => {
     .then(res => res.data)
 
   // https://octokit.github.io/rest.js/v18#git-get-commit
-  console.log(releaseTag)
+  console.log(`current release tag: ${releaseTag}`)
+
   const prevReleaseDate = await octokit.rest.repos
     .getCommit({
       owner: context.repo.owner,
       repo: context.repo.repo,
-      ref: `tags/${releaseTag}`
+      ref: `refs/tags/${releaseTag}`
     })
     .then(res => res.data.commit.author?.date!)
     .catch(err => console.error("releaseTag", err))
