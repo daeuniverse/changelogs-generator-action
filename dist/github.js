@@ -31,12 +31,12 @@ const getPulls = (releaseTag) => __awaiter(void 0, void 0, void 0, function* () 
     })
         .then(res => res.data);
     // https://octokit.github.io/rest.js/v18#git-get-commit
-    console.log(releaseTag);
+    console.log(`current release tag: ${releaseTag}`);
     const prevReleaseDate = yield octokit.rest.repos
         .getCommit({
         owner: context.repo.owner,
         repo: context.repo.repo,
-        ref: `tags/${releaseTag}`
+        ref: `refs/tags/${releaseTag}`
     })
         .then(res => { var _a; return (_a = res.data.commit.author) === null || _a === void 0 ? void 0 : _a.date; })
         .catch(err => console.error("releaseTag", err));

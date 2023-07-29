@@ -1,6 +1,6 @@
 import * as core from "@actions/core"
 import * as github from "@actions/github"
-import {PullRequest} from "./types"
+import { PullRequest } from "./types"
 
 // github octokit
 const token = core.getInput("token")
