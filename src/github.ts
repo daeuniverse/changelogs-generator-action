@@ -33,7 +33,7 @@ export const getPulls = async (releaseTag: string): Promise<PullRequest[]> => {
     .getCommit({
       owner: context.repo.owner,
       repo: context.repo.repo,
-      ref: `tags/${releaseTag}`
+      ref: `refs/tags/${releaseTag}`
     })
     .then(res => res.data.commit.author?.date!)
     .catch(err => console.error("releaseTag", err))
