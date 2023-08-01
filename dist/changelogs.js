@@ -11,6 +11,7 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const prettier = require("prettier");
 exports.default = (_a) => {
     var props = __rest(_a, []);
     const owner = props.context.repo.owner;
@@ -18,48 +19,48 @@ exports.default = (_a) => {
     const formatMsg = (pr) => `- ${pr.title} in [#${pr.number}](${pr.html_url}) by (${pr.assignees.length > 0 ? pr.assignees : pr.author})`;
     const commits = {
         feature: props.prs
-            .filter((pr) => pr.title.startsWith("feat") || pr.title.startsWith("optimize"))
+            .filter((pr) => pr.title.startsWith('feat') || pr.title.startsWith('optimize'))
             .map((pr) => formatMsg(pr))
-            .join("\n"),
+            .join('\n'),
         fix: props.prs
-            .filter((pr) => pr.title.startsWith("fix") ||
-            pr.title.startsWith("hotfix") ||
-            pr.title.startsWith("patch"))
+            .filter((pr) => pr.title.startsWith('fix') ||
+            pr.title.startsWith('hotfix') ||
+            pr.title.startsWith('patch'))
             .map((pr) => formatMsg(pr))
-            .join("\n"),
+            .join('\n'),
         other: props.prs
-            .filter((pr) => pr.title.startsWith("chore") ||
-            pr.title.startsWith("refactor") ||
-            pr.title.startsWith("ci") ||
-            pr.title.startsWith("doc") ||
-            pr.title.startsWith("style"))
+            .filter((pr) => pr.title.startsWith('chore') ||
+            pr.title.startsWith('refactor') ||
+            pr.title.startsWith('ci') ||
+            pr.title.startsWith('doc') ||
+            pr.title.startsWith('style'))
             .map((pr) => formatMsg(pr))
-            .join("\n")
+            .join('\n')
     };
     const newContributors = props.prs
         .filter((pr) => pr.is_new_contributor)
         .map((pr) => `- @${pr.author} made their first contribution in [#${pr.number}](${pr.html_url})`)
-        .join("\n");
+        .join('\n');
     const content = `
-${commits.feature.length > 0 ? "### Features" : ""}
-${commits.feature.length > 0 ? commits.feature : ""}
+${commits.feature.length > 0 ? '### Features' : ''}
+${commits.feature.length > 0 ? commits.feature : ''}
 
-${commits.fix.length > 0 ? "### Bug Fixes" : ""}
-${commits.fix.length > 0 ? commits.fix : ""}
+${commits.fix.length > 0 ? '### Bug Fixes' : ''}
+${commits.fix.length > 0 ? commits.fix : ''}
 
-${commits.other.length > 0 ? "### Others" : ""}
-${commits.other.length > 0 ? commits.other : ""}
+${commits.other.length > 0 ? '### Others' : ''}
+${commits.other.length > 0 ? commits.other : ''}
 
-${repo === "dae"
+${repo === 'dae'
         ? `**Example Config**: https://github.com/daeuniverse/dae/blob/${props.inputs.futureRelease}/example.dae`
-        : ""}
+        : ''}
   `.trim();
     const newContributorsContent = `
-${newContributors.length > 0 ? "### New Contributors" : ""}
+${newContributors.length > 0 ? '### New Contributors' : ''}
 
-${newContributors.length > 0 ? newContributors : ""}
+${newContributors.length > 0 ? newContributors : ''}
   `.trim();
-    return `
+    const changelogs = `
 ## Context
 
 🚀 @daebot proposed the following changelogs for release ${props.inputs.futureRelease} generated in [workflow run](https://github.com/${owner}/${repo}/actions/runs/${props.context.runId}).
@@ -73,4 +74,5 @@ ${content}
 
 ${newContributorsContent}
 `.trim();
+    return prettier.format(changelogs, { parser: 'markdown' });
 };

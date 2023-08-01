@@ -1,5 +1,6 @@
-import * as github from "@actions/github"
-import {PullRequest} from "./types"
+import * as github from '@actions/github'
+import * as prettier from 'prettier'
+import {PullRequest} from './types'
 
 type ChangelogsInputs = {
   context: typeof github.context
@@ -23,30 +24,30 @@ export default ({...props}: ChangelogsInputs) => {
     feature: props.prs
       .filter(
         (pr: PullRequest) =>
-          pr.title.startsWith("feat") || pr.title.startsWith("optimize")
+          pr.title.startsWith('feat') || pr.title.startsWith('optimize')
       )
       .map((pr: PullRequest) => formatMsg(pr))
-      .join("\n"),
+      .join('\n'),
     fix: props.prs
       .filter(
         (pr: PullRequest) =>
-          pr.title.startsWith("fix") ||
-          pr.title.startsWith("hotfix") ||
-          pr.title.startsWith("patch")
+          pr.title.startsWith('fix') ||
+          pr.title.startsWith('hotfix') ||
+          pr.title.startsWith('patch')
       )
       .map((pr: PullRequest) => formatMsg(pr))
-      .join("\n"),
+      .join('\n'),
     other: props.prs
       .filter(
         (pr: PullRequest) =>
-          pr.title.startsWith("chore") ||
-          pr.title.startsWith("refactor") ||
-          pr.title.startsWith("ci") ||
-          pr.title.startsWith("doc") ||
-          pr.title.startsWith("style")
+          pr.title.startsWith('chore') ||
+          pr.title.startsWith('refactor') ||
+          pr.title.startsWith('ci') ||
+          pr.title.startsWith('doc') ||
+          pr.title.startsWith('style')
       )
       .map((pr: PullRequest) => formatMsg(pr))
-      .join("\n")
+      .join('\n')
   }
 
   const newContributors = props.prs
@@ -55,32 +56,32 @@ export default ({...props}: ChangelogsInputs) => {
       (pr: PullRequest) =>
         `- @${pr.author} made their first contribution in [#${pr.number}](${pr.html_url})`
     )
-    .join("\n")
+    .join('\n')
 
   const content = `
-${commits.feature.length > 0 ? "### Features" : ""}
-${commits.feature.length > 0 ? commits.feature : ""}
+${commits.feature.length > 0 ? '### Features' : ''}
+${commits.feature.length > 0 ? commits.feature : ''}
 
-${commits.fix.length > 0 ? "### Bug Fixes" : ""}
-${commits.fix.length > 0 ? commits.fix : ""}
+${commits.fix.length > 0 ? '### Bug Fixes' : ''}
+${commits.fix.length > 0 ? commits.fix : ''}
 
-${commits.other.length > 0 ? "### Others" : ""}
-${commits.other.length > 0 ? commits.other : ""}
+${commits.other.length > 0 ? '### Others' : ''}
+${commits.other.length > 0 ? commits.other : ''}
 
 ${
-  repo === "dae"
+  repo === 'dae'
     ? `**Example Config**: https://github.com/daeuniverse/dae/blob/${props.inputs.futureRelease}/example.dae`
-    : ""
+    : ''
 }
   `.trim()
 
   const newContributorsContent = `
-${newContributors.length > 0 ? "### New Contributors" : ""}
+${newContributors.length > 0 ? '### New Contributors' : ''}
 
-${newContributors.length > 0 ? newContributors : ""}
+${newContributors.length > 0 ? newContributors : ''}
   `.trim()
 
-  return `
+  const changelogs = `
 ## Context
 
 🚀 @daebot proposed the following changelogs for release ${props.inputs.futureRelease} generated in [workflow run](https://github.com/${owner}/${repo}/actions/runs/${props.context.runId}).
@@ -94,4 +95,6 @@ ${content}
 
 ${newContributorsContent}
 `.trim()
+
+  return prettier.format(changelogs, {parser: 'markdown'})
 }

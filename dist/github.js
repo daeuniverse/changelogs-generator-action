@@ -13,7 +13,7 @@ exports.getPulls = exports.getContext = void 0;
 const core = require("@actions/core");
 const github = require("@actions/github");
 // github octokit
-const token = core.getInput("token");
+const token = core.getInput('token');
 const octokit = github.getOctokit(token);
 const context = github.context;
 const getContext = () => {
@@ -27,7 +27,7 @@ const getPulls = (releaseTag) => __awaiter(void 0, void 0, void 0, function* () 
         .list({
         repo: context.repo.repo,
         owner: context.repo.owner,
-        state: "closed"
+        state: 'closed'
     })
         .then(res => res.data);
     // https://octokit.github.io/rest.js/v18#git-get-commit
@@ -39,7 +39,7 @@ const getPulls = (releaseTag) => __awaiter(void 0, void 0, void 0, function* () 
         ref: `refs/tags/${releaseTag}`
     })
         .then(res => { var _a; return (_a = res.data.commit.author) === null || _a === void 0 ? void 0 : _a.date; })
-        .catch(err => console.error("releaseTag", err));
+        .catch(err => console.error('releaseTag', err));
     const contributors = yield octokit.rest.repos
         .listContributors({
         repo: context.repo.repo,
@@ -54,12 +54,12 @@ const getPulls = (releaseTag) => __awaiter(void 0, void 0, void 0, function* () 
         var _a, _b;
         return ({
             number: pr.number,
-            author: ((_a = pr.user) === null || _a === void 0 ? void 0 : _a.login) || "",
+            author: ((_a = pr.user) === null || _a === void 0 ? void 0 : _a.login) || '',
             assignees: pr.assignees ? pr.assignees.map(item => `@${item.login}`) : [],
-            title: pr.title || "",
+            title: pr.title || '',
             labels: pr.labels.map(i => i.name),
             html_url: pr.html_url,
-            merged_at: pr.merged_at || "",
+            merged_at: pr.merged_at || '',
             is_new_contributor: !contributors.includes((_b = pr.user) === null || _b === void 0 ? void 0 : _b.login)
         });
     });
