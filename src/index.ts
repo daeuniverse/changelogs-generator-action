@@ -1,12 +1,13 @@
-import * as core from '@actions/core'
-import constructChangelogs from './changelogs'
-import {getContext, getPulls} from './github'
+import * as core from "@actions/core"
+import * as github from "@actions/github"
+import {getContext, getPulls} from "./github"
+import constructChangelogs from "./changelogs"
 
 const handler = async () => {
   try {
     // retrive val from inputs
-    const previousRelease = core.getInput('previousRelease')
-    const futureRelease = core.getInput('futureRelease')
+    const previousRelease = core.getInput("previousRelease")
+    const futureRelease = core.getInput("futureRelease")
     console.log(`Action inputs: ${previousRelease}, ${futureRelease}`)
 
     const context = getContext()
@@ -31,8 +32,8 @@ const handler = async () => {
 
     // set outputs
     const time = new Date().toTimeString()
-    core.setOutput('time', time)
-    core.setOutput('changelogs', changelogs)
+    core.setOutput("time", time)
+    core.setOutput("changelogs", changelogs)
   } catch (err: any) {
     core.setFailed(err.message)
   }

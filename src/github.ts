@@ -1,11 +1,16 @@
-import * as core from '@actions/core'
-import * as github from '@actions/github'
-import {PullRequest} from './types'
+import * as core from "@actions/core"
+import * as github from "@actions/github"
+import { PullRequest } from "./types"
 
 // github octokit
-const token = core.getInput('token')
+const token = core.getInput("token")
 const octokit = github.getOctokit(token)
 const context = github.context
+
+interface Action {
+  getContext: () => {}
+  getPulls: () => Promise<PullRequest[]>
+}
 
 export const getContext = () => {
   // get the JSON webhook payload for the event that triggered the workflow
@@ -18,7 +23,7 @@ export const getPulls = async (releaseTag: string): Promise<PullRequest[]> => {
     .list({
       repo: context.repo.repo,
       owner: context.repo.owner,
-      state: 'closed'
+      state: "closed"
     })
     .then(res => res.data)
 
@@ -32,7 +37,7 @@ export const getPulls = async (releaseTag: string): Promise<PullRequest[]> => {
       ref: `refs/tags/${releaseTag}`
     })
     .then(res => res.data.commit.author?.date!)
-    .catch(err => console.error('releaseTag', err))
+    .catch(err => console.error("releaseTag", err))
 
   const contributors = await octokit.rest.repos
     .listContributors({
@@ -47,12 +52,12 @@ export const getPulls = async (releaseTag: string): Promise<PullRequest[]> => {
     })
     .map(pr => ({
       number: pr.number,
-      author: pr.user?.login || '',
+      author: pr.user?.login || "",
       assignees: pr.assignees ? pr.assignees.map(item => `@${item.login}`) : [],
-      title: pr.title || '',
+      title: pr.title || "",
       labels: pr.labels.map(i => i.name),
       html_url: pr.html_url,
-      merged_at: pr.merged_at || '',
+      merged_at: pr.merged_at || "",
       is_new_contributor: !contributors.includes(pr.user?.login)
     }))
 }
