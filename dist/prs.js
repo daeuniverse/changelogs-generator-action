@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const node_fetch_1 = require("node-fetch");
 const graphql_1 = require("@octokit/graphql");
 const paginationMaxItem = 100;
 const fetchPullRequestsInRange = (owner, repo, fromDate) => __awaiter(void 0, void 0, void 0, function* () {
@@ -48,6 +49,9 @@ const fetchPullRequestsInRange = (owner, repo, fromDate) => __awaiter(void 0, vo
     const graphqlWithAuth = graphql_1.graphql.defaults({
         headers: {
             authorization: `token ${process.env.GITHUB_TOKEN}`
+        },
+        request: {
+            fetch: node_fetch_1.default // Provide the fetch implementation here
         }
     });
     try {
