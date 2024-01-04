@@ -1,3 +1,4 @@
+import fetch from "node-fetch"
 import {graphql} from "@octokit/graphql"
 import {PullRequest, GraphQLQueryResponse} from "./types"
 
@@ -55,6 +56,9 @@ export const fetchPullRequestsInRange = async (
   const graphqlWithAuth = graphql.defaults({
     headers: {
       authorization: `token ${process.env.GITHUB_TOKEN}`
+    },
+    request: {
+      fetch: fetch
     }
   })
 
