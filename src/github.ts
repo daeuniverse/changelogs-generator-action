@@ -52,6 +52,6 @@ export const getPulls = async (releaseTag: string): Promise<PullRequest[]> => {
     })
     .map(pr => ({
       ...pr,
-      is_new_contributor: !contributors.includes(pr.author)
+      is_new_contributor: contributors.includes(pr.author)
     }))
 }

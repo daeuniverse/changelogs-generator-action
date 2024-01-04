@@ -46,6 +46,6 @@ const getPulls = (releaseTag) => __awaiter(void 0, void 0, void 0, function* () 
         .filter(pr => {
         return pr.merged_at && pr.merged_at > prevReleaseDate;
     })
-        .map(pr => (Object.assign(Object.assign({}, pr), { is_new_contributor: !contributors.includes(pr.author) })));
+        .map(pr => (Object.assign(Object.assign({}, pr), { is_new_contributor: contributors.includes(pr.author) })));
 });
 exports.getPulls = getPulls;
