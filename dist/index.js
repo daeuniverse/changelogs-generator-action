@@ -132,7 +132,8 @@ const getPulls = (releaseTag) => __awaiter(void 0, void 0, void 0, function* () 
         repo: context.repo.repo,
         owner: context.repo.owner
     })
-        .then(res => res.data.map(person => person.login));
+        .then(res => res.data.filter(item => item.contributions == 1))
+        .then(data => data.map(item => item.login));
     return prs
         .filter(pr => {
         return pr.merged_at && pr.merged_at > prevReleaseDate;

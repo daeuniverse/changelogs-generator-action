@@ -45,7 +45,8 @@ export const getPulls = async (releaseTag: string): Promise<PullRequest[]> => {
       repo: context.repo.repo,
       owner: context.repo.owner
     })
-    .then(res => res.data.map(person => person.login))
+    .then(res => res.data.filter(item => item.contributions == 1))
+    .then(data => data.map(item => item.login))
 
   return prs
     .filter(pr => {
