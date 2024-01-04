@@ -15,7 +15,7 @@ export default ({...props}: ChangelogsInputs) => {
   const repo = props.context.repo.repo
 
   const formatMsg = (pr: PullRequest) =>
-    `- ${pr.title} in [#${pr.number}](${pr.html_url}) by (${
+    `- ${pr.title} in [#${pr.number}](${pr.html_url}) by (@${
       pr.assignees.length > 0 ? pr.assignees : pr.author
     })`
 
@@ -78,7 +78,7 @@ ${
   `.trim()
 
   const newContributorsContent = `
-${newContributors.length > 0 ? "### New Contributors" : ""}
+${newContributors.length > 0 ? "#### New Contributors" : ""}
 
 ${newContributors.length > 0 ? newContributors : ""}
   `.trim()
