@@ -58,7 +58,7 @@ ${repo === "dae"
         : ""}
   `.trim();
     const newContributorsContent = `
-${newContributors.length > 0 ? "### New Contributors" : ""}
+${newContributors.length > 0 ? "#### New Contributors" : ""}
 
 ${newContributors.length > 0 ? newContributors : ""}
   `.trim();
