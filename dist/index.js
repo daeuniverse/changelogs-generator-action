@@ -125,7 +125,7 @@ const getPulls = (releaseTag) => __awaiter(void 0, void 0, void 0, function* () 
         .then(res => { var _a; return (_a = res.data.commit.author) === null || _a === void 0 ? void 0 : _a.date; })
         .catch(err => console.error("releaseTag", err));
     // List all commits since a timestamp
-    const prs = yield (0, pulls_1.fetchPullRequestsInRange)(context.repo.owner, context.repo.repo, prevReleaseDate);
+    const prs = yield (0, pulls_1.fetchPullRequestsInRange)(context.repo.owner, context.repo.repo, prevReleaseDate, token);
     // Fetch existing contributors
     const contributors = yield octokit.rest.repos
         .listContributors({
@@ -212,7 +212,7 @@ exports.fetchPullRequestsInRange = void 0;
 const node_fetch_1 = __nccwpck_require__(4429);
 const graphql_1 = __nccwpck_require__(8467);
 const paginationMaxItem = 100;
-const fetchPullRequestsInRange = (owner, repo, fromDate) => __awaiter(void 0, void 0, void 0, function* () {
+const fetchPullRequestsInRange = (owner, repo, fromDate, token) => __awaiter(void 0, void 0, void 0, function* () {
     const now = new Date().toISOString();
     const query = `
     query {
@@ -258,7 +258,7 @@ const fetchPullRequestsInRange = (owner, repo, fromDate) => __awaiter(void 0, vo
   `;
     const graphqlWithAuth = graphql_1.graphql.defaults({
         headers: {
-            authorization: `token ${process.env.GITHUB_TOKEN}`
+            authorization: `token ${token}`
         },
         request: {
             fetch: node_fetch_1.default

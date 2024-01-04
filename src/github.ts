@@ -35,7 +35,8 @@ export const getPulls = async (releaseTag: string): Promise<PullRequest[]> => {
   const prs: PullRequest[] = await fetchPullRequestsInRange(
     context.repo.owner,
     context.repo.repo,
-    prevReleaseDate!
+    prevReleaseDate!,
+    token
   )
 
   // Fetch existing contributors

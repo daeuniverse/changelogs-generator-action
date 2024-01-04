@@ -13,7 +13,7 @@ exports.fetchPullRequestsInRange = void 0;
 const node_fetch_1 = require("node-fetch");
 const graphql_1 = require("@octokit/graphql");
 const paginationMaxItem = 100;
-const fetchPullRequestsInRange = (owner, repo, fromDate) => __awaiter(void 0, void 0, void 0, function* () {
+const fetchPullRequestsInRange = (owner, repo, fromDate, token) => __awaiter(void 0, void 0, void 0, function* () {
     const now = new Date().toISOString();
     const query = `
     query {
@@ -59,7 +59,7 @@ const fetchPullRequestsInRange = (owner, repo, fromDate) => __awaiter(void 0, vo
   `;
     const graphqlWithAuth = graphql_1.graphql.defaults({
         headers: {
-            authorization: `token ${process.env.GITHUB_TOKEN}`
+            authorization: `token ${token}`
         },
         request: {
             fetch: node_fetch_1.default

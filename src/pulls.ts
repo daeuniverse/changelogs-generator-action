@@ -7,7 +7,8 @@ const paginationMaxItem = 100
 export const fetchPullRequestsInRange = async (
   owner: string,
   repo: string,
-  fromDate: string
+  fromDate: string,
+  token: string
 ): Promise<PullRequest[]> => {
   const now = new Date().toISOString()
 
@@ -55,7 +56,7 @@ export const fetchPullRequestsInRange = async (
   `
   const graphqlWithAuth = graphql.defaults({
     headers: {
-      authorization: `token ${process.env.GITHUB_TOKEN}`
+      authorization: `token ${token}`
     },
     request: {
       fetch: fetch

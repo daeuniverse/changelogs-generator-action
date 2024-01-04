@@ -34,7 +34,7 @@ const getPulls = (releaseTag) => __awaiter(void 0, void 0, void 0, function* () 
         .then(res => { var _a; return (_a = res.data.commit.author) === null || _a === void 0 ? void 0 : _a.date; })
         .catch(err => console.error("releaseTag", err));
     // List all commits since a timestamp
-    const prs = yield (0, pulls_1.fetchPullRequestsInRange)(context.repo.owner, context.repo.repo, prevReleaseDate);
+    const prs = yield (0, pulls_1.fetchPullRequestsInRange)(context.repo.owner, context.repo.repo, prevReleaseDate, token);
     // Fetch existing contributors
     const contributors = yield octokit.rest.repos
         .listContributors({
