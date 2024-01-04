@@ -12,26 +12,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getPulls = exports.getContext = void 0;
 const core = require("@actions/core");
 const github = require("@actions/github");
-// github octokit
+const pulls_1 = require("./pulls");
 const token = core.getInput("token");
 const octokit = github.getOctokit(token);
 const context = github.context;
 const getContext = () => {
-    // get the JSON webhook payload for the event that triggered the workflow
+    // Get the JSON webhook payload for the event that triggered the workflow
     return context;
 };
 exports.getContext = getContext;
 const getPulls = (releaseTag) => __awaiter(void 0, void 0, void 0, function* () {
-    // list all commits since a timestamp
-    const prs = yield octokit.rest.pulls
-        .list({
-        repo: context.repo.repo,
-        owner: context.repo.owner,
-        state: "closed"
-    })
-        .then(res => res.data);
     // https://octokit.github.io/rest.js/v18#git-get-commit
     console.log(`current release tag: ${releaseTag}`);
+    // Get previous release date
     const prevReleaseDate = yield octokit.rest.repos
         .getCommit({
         owner: context.repo.owner,
@@ -40,28 +33,20 @@ const getPulls = (releaseTag) => __awaiter(void 0, void 0, void 0, function* () 
     })
         .then(res => { var _a; return (_a = res.data.commit.author) === null || _a === void 0 ? void 0 : _a.date; })
         .catch(err => console.error("releaseTag", err));
+    // List all commits since a timestamp
+    const prs = yield (0, pulls_1.fetchPullRequestsInRange)(context.repo.owner, context.repo.repo, prevReleaseDate, token);
+    // Fetch existing contributors
     const contributors = yield octokit.rest.repos
         .listContributors({
         repo: context.repo.repo,
         owner: context.repo.owner
     })
-        .then(res => res.data.map(person => person.login));
+        .then(res => res.data.filter(item => item.contributions == 1))
+        .then(data => data.map(item => item.login));
     return prs
         .filter(pr => {
         return pr.merged_at && pr.merged_at > prevReleaseDate;
     })
-        .map(pr => {
-        var _a, _b;
-        return ({
-            number: pr.number,
-            author: ((_a = pr.user) === null || _a === void 0 ? void 0 : _a.login) || "",
-            assignees: pr.assignees ? pr.assignees.map(item => `@${item.login}`) : [],
-            title: pr.title || "",
-            labels: pr.labels.map(i => i.name),
-            html_url: pr.html_url,
-            merged_at: pr.merged_at || "",
-            is_new_contributor: !contributors.includes((_b = pr.user) === null || _b === void 0 ? void 0 : _b.login)
-        });
-    });
+        .map(pr => (Object.assign(Object.assign({}, pr), { is_new_contributor: contributors.includes(pr.author) })));
 });
 exports.getPulls = getPulls;
