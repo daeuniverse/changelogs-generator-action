@@ -69,6 +69,12 @@ export const fetchPullRequestsInRange = async (
       name: repo
     })
 
+    console.log(
+      result.search.nodes.map((data: any) => ({
+        author: data.author
+      }))
+    )
+
     return result.search.nodes.map((data: any) => ({
       title: data.title,
       html_url: data.url,

@@ -70,6 +70,9 @@ const fetchPullRequestsInRange = (owner, repo, fromDate, token) => __awaiter(voi
             owner: owner,
             name: repo
         });
+        console.log(result.search.nodes.map((data) => ({
+            author: data.author
+        })));
         return result.search.nodes.map((data) => ({
             title: data.title,
             html_url: data.url,
