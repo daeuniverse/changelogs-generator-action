@@ -73,19 +73,22 @@ const fetchPullRequestsInRange = (owner, repo, fromDate, token) => __awaiter(voi
         console.log(result.search.nodes.map((data) => ({
             author: data.author
         })));
-        return result.search.nodes.map((data) => ({
-            title: data.title,
-            html_url: data.url,
-            number: data.number,
-            state: data.state,
-            labels: data.labels.nodes.map((entry) => entry.name),
-            assignees: data.assignees.nodes.map((entry) => entry.login),
-            author: data.author.login,
-            merged_commit_sha: data.mergeCommit.oid,
-            merged_at: data.mergedAt,
-            base_ref: data.baseRefName,
-            head_ref: data.headRefName
-        }));
+        return result.search.nodes.map((data) => {
+            var _a;
+            return ({
+                title: data.title,
+                html_url: data.url,
+                number: data.number,
+                state: data.state,
+                labels: data.labels.nodes.map((entry) => entry.name),
+                assignees: data.assignees.nodes.map((entry) => (entry === null || entry === void 0 ? void 0 : entry.login) ? entry.login : null),
+                author: ((_a = data.author) === null || _a === void 0 ? void 0 : _a.login) ? data.author.login : null,
+                merged_commit_sha: data.mergeCommit.oid,
+                merged_at: data.mergedAt,
+                base_ref: data.baseRefName,
+                head_ref: data.headRefName
+            });
+        });
     }
     catch (err) {
         console.error("Error fetching pull requests:", err);
